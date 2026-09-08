@@ -1,6 +1,6 @@
 # Personal Hub
 
-Tableau de bord personnel en HTML, CSS et JavaScript vanilla, sans framework ni dépendance. La page est volontairement en lecture seule : son contenu est maintenu par Hermes à partir des demandes envoyées sur Telegram.
+Tableau de bord personnel mobile-first en HTML, CSS et JavaScript vanilla, sans framework ni dépendance. La page est volontairement en lecture seule : son contenu est maintenu par Hermes à partir des demandes envoyées par Telegram.
 
 ## Contenu affiché
 
