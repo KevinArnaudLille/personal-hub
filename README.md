@@ -4,11 +4,8 @@ Tableau de bord personnel en HTML, CSS et JavaScript vanilla, sans framework ni 
 
 ## Contenu affiché
 
-- prochaines actions ;
-- notes rapides ;
-- idées à garder ;
-- raccourcis vers des liens utiles ;
-- résumé et date de mise à jour ;
+- notes ;
+- sessions techniques archivées par `protocole omega`, chacune avec un identifiant de référence ;
 - thème clair/sombre pour la consultation.
 
 Aucune donnée n'est saisie sur la page et aucun formulaire n'est présent. Pour modifier le contenu, il suffit d'envoyer une demande à Hermes sur Telegram.
