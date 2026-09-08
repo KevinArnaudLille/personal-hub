@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Protocoles personnels du Personal Hub.">
+  <title>Protocoles · Personal Hub</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .protocol-page { max-width: 900px; margin: 0 auto; padding-top: 35px; }
+    .back-link { color: var(--olive); display: inline-block; font-size: 13px; margin-bottom: 42px; text-decoration: none; }
+    .back-link:hover { text-decoration: underline; }
+    .protocol-intro { color: var(--muted); line-height: 1.6; max-width: 580px; }
+    .protocol-groups { display: grid; gap: 18px; margin-top: 42px; }
+    .protocol-group { background: var(--surface); border: 1px solid var(--line); border-radius: 18px; box-shadow: var(--shadow); padding: 25px; }
+    .protocol-group h2 { align-items: center; display: flex; gap: 10px; margin-bottom: 20px; }
+    .protocol-group h2::before { background: var(--accent); border-radius: 50%; content: ''; display: inline-block; height: 9px; width: 9px; }
+    .protocol { border-top: 1px solid var(--line); padding: 17px 0 3px; }
+    .protocol:first-of-type { border-top: 0; padding-top: 0; }
+    .protocol h3 { font-size: 16px; margin: 0 0 7px; }
+    .protocol h3 code { background: color-mix(in srgb, var(--accent) 10%, transparent); border-radius: 5px; color: var(--accent-dark); font-family: ui-monospace, monospace; font-size: 13px; padding: 4px 7px; }
+    .protocol p { color: var(--muted); font-size: 13px; line-height: 1.55; margin: 0; }
+    .protocol-note { color: var(--muted); font-size: 12px; margin-top: 28px; }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="index.html"><span class="brand-mark">✦</span> Personal Hub</a>
+    <div class="top-actions"><span class="muted">LECTURE SEULE</span><button id="theme-toggle" class="icon-button" type="button" aria-label="Changer de thème">☼</button></div>
+  </header>
+  <main class="shell protocol-page">
+    <a class="back-link" href="index.html">← Retour au Personal Hub</a>
+    <p class="eyebrow">RÈGLES DE FONCTIONNEMENT</p>
+    <h1>Protocoles <em>personnels.</em></h1>
+    <p class="protocol-intro">Les protocoles sont des raccourcis de fonctionnement entre Telegram, la CLI et Hermes. Ils sont déclenchés lorsqu’un message commence par leur nom.</p>
+
+    <section class="protocol-groups">
+      <article class="protocol-group">
+        <h2>Session</h2>
+        <div class="protocol"><h3><code>protocole-alpha</code></h3><p>Repartir dans un contexte conversationnel vierge, sans effacer la mémoire durable.</p></div>
+      </article>
+      <article class="protocol-group">
+        <h2>Contenu du Personal Hub</h2>
+        <div class="protocol"><h3><code>protocole n1</code></h3><p>Tout le texte qui suit devient une note ajoutée au Personal Hub, puis publiée sur GitHub Pages.</p></div>
+      </article>
+      <article class="protocol-group">
+        <h2>Création</h2>
+        <div class="protocol"><h3><code>protocole P0</code></h3><p>Créer un nouveau protocole à partir d’une spécification, puis l’enregistrer dans les règles durables.</p></div>
+      </article>
+    </section>
+    <p class="protocol-note">Pour créer ou modifier un protocole, envoie-moi simplement une demande sur Telegram.</p>
+  </main>
+  <script>
+    document.getElementById('theme-toggle').addEventListener('click', () => document.body.classList.toggle('dark'));
+  </script>
+</body>
+</html>
