@@ -1,18 +1,17 @@
 # Personal Hub
 
-Tableau de bord personnel en HTML, CSS et JavaScript vanilla, sans framework ni dépendance.
+Tableau de bord personnel en HTML, CSS et JavaScript vanilla, sans framework ni dépendance. La page est volontairement en lecture seule : son contenu est maintenu par Hermes à partir des demandes envoyées sur Telegram.
 
-## Fonctionnalités
+## Contenu affiché
 
-- prochaines actions avec cases à cocher ;
+- prochaines actions ;
 - notes rapides ;
 - idées à garder ;
 - raccourcis vers des liens utiles ;
-- thème clair/sombre ;
-- stockage local dans le navigateur (`localStorage`) ;
-- interface responsive mobile et desktop.
+- résumé et date de mise à jour ;
+- thème clair/sombre pour la consultation.
 
-Les données saisies restent dans le navigateur utilisé pour consulter la page. GitHub Pages ne stocke aucune donnée personnelle saisie dans l'application.
+Aucune donnée n'est saisie sur la page et aucun formulaire n'est présent. Pour modifier le contenu, il suffit d'envoyer une demande à Hermes sur Telegram.
 
 ## Développement local
 
