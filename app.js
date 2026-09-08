@@ -1,8 +1,8 @@
 /* Read-only content maintained by Hermes from Telegram requests. */
 const hub = {
-  updatedAt: 'Première version',
+  updatedAt: 'Dernière mise à jour via Telegram',
   tasks: [],
-  notes: [],
+  notes: [{ title: 'Note Telegram', body: 'pensé à passer l\'aspirateur partout.' }],
   ideas: [],
   links: []
 };
