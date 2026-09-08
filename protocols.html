@@ -14,6 +14,10 @@
     .protocol-groups { display: grid; gap: 18px; margin-top: 42px; }
     .protocol-group { background: var(--surface); border: 1px solid var(--line); border-radius: 18px; box-shadow: var(--shadow); padding: 25px; }
     .protocol-group h2 { align-items: center; display: flex; gap: 10px; margin-bottom: 20px; }
+    .protocol-subgroup { border-top: 1px solid var(--line); padding-top: 16px; margin-top: 16px; }
+    .protocol-subgroup:first-of-type { border-top: 0; margin-top: 0; padding-top: 0; }
+    .protocol-subgroup > h3 { color: var(--olive); font-size: 13px; letter-spacing: .02em; margin: 0 0 8px; }
+    .protocol h4 { font-size: 15px; margin: 0 0 7px; }
     .protocol-group h2::before { background: var(--accent); border-radius: 50%; content: ''; display: inline-block; height: 9px; width: 9px; }
     .protocol { border-top: 1px solid var(--line); padding: 17px 0 3px; }
     .protocol:first-of-type { border-top: 0; padding-top: 0; }
@@ -41,8 +45,14 @@
       </article>
       <article class="protocol-group">
         <h2>Protocoles fonctionnels</h2>
-        <div class="protocol"><h3><code>protocole N1</code></h3><p><strong>N = note.</strong> Tout le texte qui suit devient une note ajoutée au Personal Hub, puis publiée sur GitHub Pages.</p></div>
-        <div class="protocol"><h3><code>protocole P0</code></h3><p><strong>P = protocole.</strong> Créer un nouveau protocole à partir d’une spécification, puis l’enregistrer dans les règles durables.</p></div>
+        <div class="protocol-subgroup">
+          <h3>N — Notes</h3>
+          <div class="protocol"><h4><code>protocole N1</code></h4><p>Tout le texte qui suit devient une note ajoutée au Personal Hub, puis publiée sur GitHub Pages.</p></div>
+        </div>
+        <div class="protocol-subgroup">
+          <h3>P — Protocoles</h3>
+          <div class="protocol"><h4><code>protocole P0</code></h4><p>Créer un nouveau protocole à partir d’une spécification, puis l’enregistrer dans les règles durables.</p></div>
+        </div>
       </article>
     </section>
     <p class="protocol-note">Pour créer ou modifier un protocole, envoie-moi simplement une demande sur Telegram.</p>
