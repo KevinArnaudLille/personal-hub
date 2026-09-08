@@ -2,7 +2,10 @@
 const hub = {
   updatedAt: 'Dernière mise à jour via Telegram',
   tasks: [],
-  notes: [{ title: 'Note Telegram', body: 'pensé à passer l\'aspirateur partout.' }],
+  notes: [
+    { title: 'Note Telegram', body: 'pensé à passer l\'aspirateur partout.' },
+    { title: 'Session — Progressive disclosure', body: 'Nous avons défini la divulgation progressive en UX et pour les agents conversationnels. Application retenue : garder une mémoire courte et durable, organiser les skills en couches (déclencheur, règle principale, procédure détaillée, références), afficher d’abord le résultat utile et ne révéler les détails techniques ou les conséquences sensibles que lorsque c’est nécessaire ou demandé.' }
+  ],
   ideas: [],
   links: []
 };
