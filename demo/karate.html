@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Demo pédagogique animée du kata Heian Shodan.">
+  <title>Demo Kata · Personal Hub</title>
+  <link rel="stylesheet" href="../style.css">
+  <link rel="icon" type="image/svg+xml" href="../assets/favicon.svg">
+  <style>
+    .demo-page { max-width: 1040px; padding-top: 32px; }
+    .back-link { color: var(--olive); display: inline-block; font-size: 13px; margin-bottom: 32px; text-decoration: none; }
+    .back-link:hover { text-decoration: underline; }
+    .kata-layout { display: grid; gap: 14px; margin-top: 28px; }
+    .kata-card { background: var(--surface); border: 1px solid var(--line); border-radius: 16px; box-shadow: var(--shadow); padding: 16px; }
+    .kata-card h2 { font-size: 20px; margin: 0 0 7px; }
+    .kata-card > p { color: var(--muted); font-size: 13px; line-height: 1.5; margin: 0 0 14px; }
+    .planche-wrap { background: #e8e4d8; border: 1px solid var(--line); border-radius: 11px; overflow: hidden; }
+    #kata-board { display: block; height: auto; width: 100%; }
+    .floor { fill: #eeeade; }
+    .floor-line { stroke: #d5d0c1; stroke-width: 1; }
+    .embusen { fill: none; stroke: #d5795b; stroke-dasharray: 6 5; stroke-linecap: round; stroke-linejoin: round; stroke-width: 3; }
+    .step-dot { fill: #fffdf9; stroke: #be4d34; stroke-width: 2; }
+    .step-dot.active { fill: #e76f51; stroke: #fffdf9; stroke-width: 3; }
+    .step-number { fill: #be4d34; font: 700 12px ui-monospace, monospace; text-anchor: middle; dominant-baseline: central; }
+    .step-number.active { fill: #fff; }
+    #avatar { transition: transform .55s cubic-bezier(.2,.8,.2,1); }
+    .avatar-shadow { fill: #26352d; opacity: .18; }
+    .avatar-body { fill: #26352d; stroke: #17201b; stroke-width: 2; }
+    .avatar-belt { stroke: #e76f51; stroke-width: 3; }
+    .avatar-head { fill: #e5b998; stroke: #17201b; stroke-width: 2; }
+    .board-label { fill: #777870; font: 600 12px ui-sans-serif, system-ui, sans-serif; letter-spacing: .08em; }
+    .step-panel { align-items: center; display: flex; gap: 13px; justify-content: space-between; margin-top: 14px; }
+    .step-counter { color: var(--muted); font: 700 12px ui-monospace, monospace; white-space: nowrap; }
+    .controls { display: flex; flex-wrap: wrap; gap: 7px; }
+    .control-button { background: var(--surface); border: 1px solid var(--line); border-radius: 8px; color: var(--ink); font-size: 12px; min-height: 36px; padding: 0 12px; }
+    .control-button.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
+    .control-button:hover { border-color: var(--accent); }
+    .speed { align-items: center; color: var(--muted); display: flex; font-size: 11px; gap: 7px; margin-top: 11px; }
+    .speed input { accent-color: var(--accent); width: 130px; }
+    .instruction { border-left: 3px solid var(--accent); background: color-mix(in srgb,var(--accent) 8%,transparent); border-radius: 0 9px 9px 0; margin-top: 15px; padding: 13px; }
+    .instruction .step-kicker { color: var(--accent-dark); font-size: 10px; font-weight: 800; letter-spacing: .16em; margin: 0 0 5px; }
+    .instruction h3 { font-size: 17px; margin: 0 0 5px; }
+    .instruction p { color: var(--muted); font-size: 13px; line-height: 1.5; margin: 0; }
+    .step-list { display: grid; gap: 6px; list-style: none; margin: 13px 0 0; padding: 0; }
+    .step-list button { background: transparent; border: 1px solid transparent; border-radius: 8px; color: var(--muted); display: flex; font-size: 12px; gap: 10px; padding: 9px; text-align: left; width: 100%; }
+    .step-list button:hover, .step-list button.active { background: color-mix(in srgb,var(--accent) 8%,transparent); border-color: var(--line); color: var(--ink); }
+    .step-list b { color: var(--accent-dark); font-family: ui-monospace, monospace; min-width: 22px; }
+    .notice { color: var(--muted); font-size: 11px; line-height: 1.5; margin: 15px 0 0; }
+    @media (min-width: 780px) { .kata-layout { grid-template-columns: minmax(0, 1.35fr) minmax(260px, .65fr); align-items: start; }.step-list { max-height: 365px; overflow: auto; } }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="../index.html"><span class="brand-mark">✦</span> Personal Hub</a>
+    <div class="top-actions"><span class="muted">DEMO</span><button id="theme-toggle" class="icon-button" type="button" aria-label="Changer de thème">☼</button></div>
+  </header>
+  <main class="shell demo-page">
+    <a class="back-link" href="../index.html">← Retour au Personal Hub</a>
+    <p class="eyebrow">DÉMONSTRATION · APPRENTISSAGE</p>
+    <h1>Heian <em>Shodan.</em></h1>
+    <p class="intro-copy">Une planche animée pour visualiser les déplacements et réviser les étapes du kata.</p>
+
+    <section class="kata-layout">
+      <article class="kata-card">
+        <h2>Planche du kata</h2>
+        <p>Utilise la lecture automatique ou avance étape par étape.</p>
+        <div class="planche-wrap">
+          <svg id="kata-board" viewBox="0 0 720 430" role="img" aria-label="Planche animée des déplacements du kata Heian Shodan">
+            <rect class="floor" width="720" height="430"/>
+            <path class="floor-line" d="M0 86h720M0 172h720M0 258h720M0 344h720M144 0v430M288 0v430M432 0v430M576 0v430"/>
+            <text class="board-label" x="22" y="30">EMBUSEN · REPÈRES DE DÉPLACEMENT</text>
+            <polyline id="embusen" class="embusen" points="360,300 220,300 100,300 100,150 220,150 360,150 500,150 620,150 620,300 500,300 360,300"/>
+            <g id="step-dots"></g>
+            <g id="avatar" transform="translate(360 300)">
+              <ellipse class="avatar-shadow" cx="0" cy="14" rx="17" ry="6"/>
+              <circle class="avatar-head" cx="0" cy="-12" r="7"/>
+              <path class="avatar-body" d="M-9 0 0-7 9 0 7 20H-7z"/>
+              <path class="avatar-belt" d="M-7 8h14"/>
+              <path class="avatar-body" d="M-7 2-16 12M7 2l9 10M-4 19-8 29M4 19l4 10" fill="none" stroke-linecap="round" stroke-width="4"/>
+            </g>
+          </svg>
+        </div>
+        <div class="step-panel"><span id="step-counter" class="step-counter"></span><div class="controls"><button id="prev" class="control-button" type="button">← Précédent</button><button id="play" class="control-button primary" type="button">▶ Lire</button><button id="next" class="control-button" type="button">Suivant →</button></div></div>
+        <label class="speed">Vitesse <input id="speed" type="range" min="0.5" max="2" value="1" step="0.25"><span id="speed-value">1×</span></label>
+      </article>
+
+      <aside class="kata-card">
+        <p class="eyebrow">REPÈRES</p>
+        <h2>Étapes</h2>
+        <div id="instruction" class="instruction"></div>
+        <ol id="step-list" class="step-list"></ol>
+        <p class="notice">Support visuel pédagogique : les détails techniques, la respiration et le rythme doivent être corrigés avec un professeur qualifié. Les variantes peuvent différer selon l’école.</p>
+      </aside>
+    </section>
+  </main>
+  <script>
+    document.getElementById('theme-toggle').addEventListener('click', () => document.body.classList.toggle('dark'));
+    const steps = [
+      { x: 360, y: 300, facing: 0, title: 'Préparation', detail: 'Position de départ : posture stable, regard dans l’axe et respiration calme.' },
+      { x: 220, y: 300, facing: 270, title: 'Gedan-barai à gauche', detail: 'Rotation et déplacement vers la gauche de la planche. Cherche une trajectoire nette.' },
+      { x: 100, y: 300, facing: 270, title: 'Oi-zuki', detail: 'Avancer dans la même direction avec un coup de poing direct.' },
+      { x: 100, y: 150, facing: 0, title: 'Gedan-barai en rotation', detail: 'Tourner sur place puis repartir dans le nouvel axe.' },
+      { x: 220, y: 150, facing: 90, title: 'Oi-zuki', detail: 'Avancer avec contrôle, en gardant le bassin engagé.' },
+      { x: 360, y: 150, facing: 90, title: 'Oi-zuki', detail: 'Deuxième déplacement dans l’axe, posture verticale.' },
+      { x: 500, y: 150, facing: 90, title: 'Oi-zuki', detail: 'Continuer la ligne et terminer chaque technique avant de repartir.' },
+      { x: 620, y: 150, facing: 90, title: 'Gedan-barai', detail: 'Fin de la ligne : préparer la rotation et le changement de direction.' },
+      { x: 620, y: 300, facing: 180, title: 'Rotation arrière', detail: 'Tourner vers l’arrière de la planche sans perdre l’équilibre.' },
+      { x: 500, y: 300, facing: 270, title: 'Oi-zuki', detail: 'Revenir vers l’axe central avec un déplacement régulier.' },
+      { x: 360, y: 300, facing: 270, title: 'Retour dans l’axe', detail: 'Finir la séquence en retrouvant la ligne de départ.' }
+    ];
+    const avatar = document.getElementById('avatar');
+    const dots = document.getElementById('step-dots');
+    const list = document.getElementById('step-list');
+    const instruction = document.getElementById('instruction');
+    const counter = document.getElementById('step-counter');
+    const play = document.getElementById('play');
+    const speed = document.getElementById('speed');
+    const speedValue = document.getElementById('speed-value');
+    let current = 0; let playing = false; let timer;
+
+    dots.innerHTML = steps.map((step, index) => `<circle class="step-dot" data-step="${index}" cx="${step.x}" cy="${step.y}" r="12"/><text class="step-number" data-step="${index}" x="${step.x}" y="${step.y}">${index + 1}</text>`).join('');
+    list.innerHTML = steps.map((step, index) => `<li><button type="button" data-step-button="${index}"><b>${String(index + 1).padStart(2, '0')}</b><span>${step.title}</span></button></li>`).join('');
+
+    function showStep(index) {
+      current = (index + steps.length) % steps.length;
+      const step = steps[current];
+      avatar.setAttribute('transform', `translate(${step.x} ${step.y}) rotate(${step.facing})`);
+      document.querySelectorAll('[data-step]').forEach(node => node.classList.toggle('active', Number(node.dataset.step) === current));
+      document.querySelectorAll('[data-step-button]').forEach(node => node.classList.toggle('active', Number(node.dataset.stepButton) === current));
+      counter.textContent = `ÉTAPE ${String(current + 1).padStart(2, '0')} / ${steps.length}`;
+      instruction.innerHTML = `<p class="step-kicker">ÉTAPE ${String(current + 1).padStart(2, '0')}</p><h3>${step.title}</h3><p>${step.detail}</p>`;
+    }
+    function tick() { showStep(current + 1); timer = setTimeout(tick, 1800 / Number(speed.value)); }
+    function togglePlay() { playing = !playing; play.textContent = playing ? '❚❚ Pause' : '▶ Lire'; if (playing) tick(); else clearTimeout(timer); }
+    play.addEventListener('click', togglePlay);
+    document.getElementById('prev').addEventListener('click', () => { if (playing) togglePlay(); showStep(current - 1); });
+    document.getElementById('next').addEventListener('click', () => { if (playing) togglePlay(); showStep(current + 1); });
+    list.addEventListener('click', event => { const button = event.target.closest('[data-step-button]'); if (button) { if (playing) togglePlay(); showStep(Number(button.dataset.stepButton)); } });
+    speed.addEventListener('input', () => { speedValue.textContent = `${speed.value}×`; });
+    showStep(0);
+  </script>
+</body>
+</html>

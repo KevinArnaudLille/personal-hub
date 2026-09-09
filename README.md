@@ -10,6 +10,7 @@ Tableau de bord personnel mobile-first en HTML, CSS et JavaScript vanilla, sans 
 - liens vers des pages Demo dédiées ;
 - une Demo Mermaid chargée depuis un fichier `.mmd` et rendue dans une page dédiée ;
 - une Demo de carte géographique libre avec Leaflet et OpenStreetMap ;
+- une Demo d’apprentissage animée du kata Heian Shodan ;
 - thème clair/sombre pour la consultation.
 
 Aucune donnée n'est saisie sur la page et aucun formulaire n'est présent. Pour modifier le contenu, il suffit d'envoyer une demande à Hermes sur Telegram.
