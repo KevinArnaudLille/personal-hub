@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Bill's Garden, une petite démo de jardin inspirée des premiers Tamagotchi.">
+  <title>Bill's Garden · Personal Hub</title>
+  <link rel="stylesheet" href="../style.css">
+  <link rel="icon" type="image/svg+xml" href="../assets/favicon.svg">
+  <style>
+    .bill-page { max-width: 900px; padding-top: 32px; }
+    .back-link { color: var(--olive); display: inline-block; font-size: 13px; margin-bottom: 32px; text-decoration: none; }
+    .back-link:hover { text-decoration: underline; }
+    .bill-card { background: var(--surface); border: 1px solid var(--line); border-radius: 18px; box-shadow: var(--shadow); margin-top: 28px; overflow: hidden; padding: 16px; }
+    .bill-card h2 { font-size: 20px; margin: 0 0 6px; }
+    .bill-card > p { color: var(--muted); font-size: 13px; line-height: 1.5; margin: 0 0 15px; }
+    #garden { background: #dcead6; border: 1px solid #bdd1b9; border-radius: 12px; display: block; height: auto; overflow: hidden; width: 100%; }
+    #garden .sky { fill: #d9edf2; }.ground { fill: #9bc477; }.ground-line { stroke: #6fa05b; stroke-width: 5; }.hill { fill: #b8d89d; }.sun { fill: #f7c96b; opacity: .9; }
+    .flower-stem { stroke: #578e51; stroke-linecap: round; stroke-width: 3; }.flower-petal { fill: #e76f82; }.flower-petal.yellow { fill: #f4c85d; }.flower-center { fill: #f3e5a3; }.cloud { fill: #fff; opacity: .7; }
+    #bill { cursor: pointer; transform-box: fill-box; transform-origin: center bottom; transition: transform .18s ease; }.bill-body { fill: #c8783e; stroke: #713e29; stroke-width: 3; }.bill-belly { fill: #f1c99a; }.bill-ear { fill: #a75d35; stroke: #713e29; stroke-width: 3; }.bill-ear-inner { fill: #e7a48d; }.bill-eye { fill: #26352d; }.bill-nose { fill: #61332b; }.bill-mouth { fill: none; stroke: #61332b; stroke-linecap: round; stroke-width: 2; }.bill-tail { fill: none; stroke: #a75d35; stroke-linecap: round; stroke-width: 8; }.bill-paw { fill: #f1c99a; stroke: #713e29; stroke-width: 2; }
+    #bill.happy { transform: translateY(-4px) rotate(-2deg); }.heart { fill: #e76f82; opacity: 0; pointer-events: none; }.heart.show { animation: float-heart 1.7s ease-out forwards; }@keyframes float-heart { 0% { opacity: 0; transform: translateY(8px) scale(.5); } 20% { opacity: 1; } 100% { opacity: 0; transform: translateY(-54px) scale(1.1); } }
+    .bill-status { align-items: center; display: flex; justify-content: space-between; margin: 13px 0 10px; }.mood { color: var(--olive); font-size: 13px; font-weight: 700; }.happiness { color: var(--muted); font: 700 12px ui-monospace, monospace; }
+    .bill-controls { display: grid; gap: 8px; grid-template-columns: repeat(3, 1fr); }.bill-button { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; color: var(--ink); min-height: 44px; padding: 8px 6px; }.bill-button:hover { border-color: var(--accent); }.bill-button span { display: block; font-size: 19px; }.bill-button small { color: var(--muted); font-size: 10px; }.bill-note { color: var(--muted); font-size: 11px; line-height: 1.45; margin: 14px 0 0; }
+    @media (min-width: 700px) { .bill-card { padding: 22px; }.bill-controls { max-width: 530px; margin: 0 auto; } }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="../index.html"><span class="brand-mark">✦</span> Personal Hub</a>
+    <div class="top-actions"><span class="muted">DEMO</span><button id="theme-toggle" class="icon-button" type="button" aria-label="Changer de thème">☼</button></div>
+  </header>
+  <main class="shell bill-page">
+    <a class="back-link" href="../index.html">← Retour au Personal Hub</a>
+    <p class="eyebrow">DÉMONSTRATION · PETIT JEU</p>
+    <h1>Bill’s <em>Garden.</em></h1>
+    <p class="intro-copy">Un petit jardin calme, inspiré des premiers Tamagotchi : nourris Bill, caresse-le et regarde-le se promener.</p>
+    <article class="bill-card">
+      <h2>Le jardin de Bill</h2>
+      <p>Bill avance doucement de gauche à droite. Clique directement sur lui pour le caresser.</p>
+      <svg id="garden" viewBox="0 0 640 350" role="img" aria-label="Bill le chat roux dans son jardin">
+        <rect class="sky" width="640" height="350"/>
+        <circle class="sun" cx="548" cy="70" r="29"/>
+        <g class="cloud"><ellipse cx="115" cy="75" rx="38" ry="13"/><ellipse cx="145" cy="71" rx="27" ry="17"/><ellipse cx="83" cy="78" rx="25" ry="11"/></g>
+        <path class="hill" d="M0 208Q130 125 270 205T520 190T640 205V350H0Z"/>
+        <rect class="ground" y="205" width="640" height="145"/>
+        <path class="ground-line" d="M0 207Q160 194 320 207T640 207" fill="none"/>
+        <g transform="translate(78 263)"><path class="flower-stem" d="M0 39V0"/><circle class="flower-center" cx="0" cy="0" r="5"/><circle class="flower-petal" cx="-8" cy="0" r="6"/><circle class="flower-petal" cx="8" cy="0" r="6"/><circle class="flower-petal" cx="0" cy="-8" r="6"/></g>
+        <g transform="translate(520 285)"><path class="flower-stem" d="M0 27V0"/><circle class="flower-center" cx="0" cy="0" r="5"/><circle class="flower-petal yellow" cx="-8" cy="0" r="6"/><circle class="flower-petal yellow" cx="8" cy="0" r="6"/><circle class="flower-petal yellow" cx="0" cy="-8" r="6"/></g>
+        <g transform="translate(185 305)"><path class="flower-stem" d="M0 18V0"/><circle class="flower-center" cx="0" cy="0" r="4"/><circle class="flower-petal" cx="-7" cy="0" r="5"/><circle class="flower-petal" cx="7" cy="0" r="5"/></g>
+        <g id="bill" transform="translate(310 238)" role="button" tabindex="0" aria-label="Caresser Bill">
+          <path class="bill-tail" d="M42 54Q76 35 58 7"/>
+          <ellipse class="bill-body" cx="0" cy="43" rx="37" ry="39"/>
+          <ellipse class="bill-belly" cx="0" cy="52" rx="22" ry="25"/>
+          <path class="bill-ear" d="M-29 18-33-19-5 3Z"/><path class="bill-ear-inner" d="M-27 8-29-9-14 3Z"/>
+          <path class="bill-ear" d="M29 18 33-19 5 3Z"/><path class="bill-ear-inner" d="M27 8 29-9 14 3Z"/>
+          <circle class="bill-eye" cx="-12" cy="18" r="4"/><circle class="bill-eye" cx="12" cy="18" r="4"/><circle class="bill-nose" cx="0" cy="28" r="3"/><path class="bill-mouth" d="M0 30q-5 8-10 2M0 30q5 8 10 2"/>
+          <ellipse class="bill-paw" cx="-25" cy="72" rx="11" ry="7"/><ellipse class="bill-paw" cx="25" cy="72" rx="11" ry="7"/>
+          <text class="heart" id="heart" x="-8" y="-25" font-size="28">♥</text>
+        </g>
+      </svg>
+      <div class="bill-status"><span id="mood" class="mood">Bill est tranquille.</span><span id="happiness" class="happiness">BONHEUR 50</span></div>
+      <div class="bill-controls"><button class="bill-button" data-action="kibble" type="button"><span>🥣</span><small>Croquettes</small></button><button class="bill-button" data-action="pate" type="button"><span>🍲</span><small>Pâté</small></button><button class="bill-button" data-action="pet" type="button"><span>♡</span><small>Caresser</small></button></div>
+      <p class="bill-note">Démo volontairement simple : pas d’inventaire, pas de score et pas de sauvegarde. Juste Bill, son jardin et quelques interactions.</p>
+    </article>
+  </main>
+  <script>
+    document.getElementById('theme-toggle').addEventListener('click', () => document.body.classList.toggle('dark'));
+    const bill = document.getElementById('bill'); const heart = document.getElementById('heart'); const mood = document.getElementById('mood'); const happiness = document.getElementById('happiness');
+    let joy = 50; let x = 310; let direction = 1; let last = performance.now();
+    function showHeart() { heart.classList.remove('show'); void heart.offsetWidth; heart.classList.add('show'); bill.classList.add('happy'); setTimeout(() => bill.classList.remove('happy'), 500); }
+    function interact(action) { const messages = { kibble: 'Bill adore ses croquettes.', pate: 'Bill se régale de son pâté.', pet: 'Bill ronronne sous la caresse.' }; joy = Math.min(100, joy + (action === 'pate' ? 9 : 6)); mood.textContent = messages[action]; happiness.textContent = `BONHEUR ${joy}`; showHeart(); }
+    document.querySelectorAll('[data-action]').forEach(button => button.addEventListener('click', () => interact(button.dataset.action)));
+    bill.addEventListener('click', () => interact('pet')); bill.addEventListener('keydown', event => { if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); interact('pet'); } });
+    function move(now) { const delta = Math.min(32, now - last); last = now; x += direction * delta * .035; if (x > 515) { x = 515; direction = -1; } if (x < 95) { x = 95; direction = 1; } bill.setAttribute('transform', `translate(${x} 238) scale(${direction < 0 ? -1 : 1} 1)`); requestAnimationFrame(move); }
+    requestAnimationFrame(move);
+  </script>
+</body>
+</html>
