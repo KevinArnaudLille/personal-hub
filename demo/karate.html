@@ -30,7 +30,7 @@
     .avatar-belt { stroke: #e76f51; stroke-width: 3; }
     .avatar-head { fill: #e5b998; stroke: #17201b; stroke-width: 2; }
     .board-label { fill: #777870; font: 600 12px ui-sans-serif, system-ui, sans-serif; letter-spacing: .08em; }
-    .reference-planche { border-top: 1px solid var(--line); margin-top: 16px; padding-top: 16px; }.reference-planche img { background: #fff; border: 1px solid var(--line); border-radius: 9px; display: block; max-height: 280px; max-width: 100%; margin: 0 auto; }.reference-planche figcaption { color: var(--muted); font-size: 10px; line-height: 1.45; margin-top: 8px; }.reference-planche a { color: var(--olive); }
+    .reference-planche { border-top: 1px solid var(--line); margin-top: 16px; padding-top: 16px; }.reference-planche img { background: #fff; border: 1px solid var(--line); border-radius: 9px; display: block; height: 260px; max-width: 100%; margin: 0 auto; object-fit: contain; width: 100%; }.reference-planche figcaption { color: var(--muted); font-size: 10px; line-height: 1.45; margin-top: 8px; }.reference-planche a { color: var(--olive); }
     .step-panel { align-items: center; display: flex; gap: 13px; justify-content: space-between; margin-top: 14px; }
     .step-counter { color: var(--muted); font: 700 12px ui-monospace, monospace; white-space: nowrap; }
     .controls { display: flex; flex-wrap: wrap; gap: 7px; }
@@ -77,7 +77,7 @@
             <rect class="floor" width="720" height="430"/>
             <path class="floor-line" d="M0 86h720M0 172h720M0 258h720M0 344h720M144 0v430M288 0v430M432 0v430M576 0v430"/>
             <text class="board-label" x="22" y="30">ANIMATION · ORDRE DES MOUVEMENTS</text>
-            <polyline id="embusen" class="embusen" points="360,300 220,300 100,300 100,150 220,150 360,150 500,150 620,150 620,300 500,300 360,300"/>
+            <path id="embusen" class="embusen" d="M100 350H620M360 350V80M100 80H620M360 350L180 190M360 350L540 190"/>
             <g id="step-dots"></g>
             <g id="avatar" transform="translate(360 300)">
               <ellipse class="avatar-shadow" cx="0" cy="14" rx="17" ry="6"/>
@@ -128,7 +128,8 @@
       { x: 480, y: 390, facing: 315, title: '20 · Migi Chudan Shuto Uke', detail: 'Shuto-uke chudan droit · kokutsu-dachi, changement de direction.' },
       { x: 400, y: 340, facing: 225, title: '21 · Hidari Chudan Shuto Uke', detail: 'Shuto-uke chudan gauche · kokutsu-dachi. Fin de la séquence, puis yame et rei.' }
     ];
-    document.getElementById('embusen').setAttribute('points', steps.map(step => `${step.x},${step.y}`).join(' '));
+    const guidePositions = [[300,350],[220,350],[140,350],[140,350],[220,350],[300,350],[380,350],[460,350],[540,350],[360,350],[360,260],[360,200],[360,140],[360,80],[260,80],[180,80],[100,80],[300,295],[240,245],[420,295],[480,245]];
+    steps.forEach((step, index) => { [step.x, step.y] = guidePositions[index]; });
     const avatar = document.getElementById('avatar');
     const dots = document.getElementById('step-dots');
     const list = document.getElementById('step-list');
