@@ -12,7 +12,7 @@ const hub = {
   }],
   projects: [
     { title: 'LifeDrop', summary: 'Petite simulation de vie en Godot 4 avec C#. On dépose des créatures qui se déplacent, vieillissent, se reproduisent ou se dévorent lorsqu’une créature plus grosse rencontre une plus petite.', path: 'life_drop_godot' },
-    { title: 'Neon Snake Remix', summary: 'Remix néon de Snake en Python avec Tkinter, avec contrôles clavier, pause, redémarrage et téléportation du serpent d’un bord à l’autre.', path: 'snake_remix' }
+    { title: 'Neon Snake Remix', summary: 'Remix néon de Snake en Python avec Tkinter, avec contrôles clavier, pause, redémarrage et téléportation du serpent d’un bord à l’autre.', path: 'snake_remix', url: 'https://github.com/KevinArnaudLille/snake-remix' }
   ]
 };
 
@@ -32,7 +32,7 @@ function render() {
     ? hub.sessions.map(session => `<article class="session"><div class="session-meta"><code>${esc(session.id)}</code><span>Session</span></div><h3>${esc(session.title)}</h3><p>${esc(session.summary)}</p></article>`).join('')
     : `<p class="empty">${emptyMessage}</p>`;
   document.getElementById('project-list').innerHTML = hub.projects.length
-    ? hub.projects.map(project => `<details class="project"><summary>${esc(project.title)}</summary><div class="project-summary"><p>${esc(project.summary)}</p><code>~/projects/${esc(project.path)}</code></div></details>`).join('')
+    ? hub.projects.map(project => `<details class="project"><summary>${esc(project.title)}</summary><div class="project-summary"><p>${esc(project.summary)}</p><code>~/projects/${esc(project.path)}</code>${project.url ? `<a class="project-link" href="${esc(project.url)}" target="_blank" rel="noopener">Voir sur GitHub ↗</a>` : ''}</div></details>`).join('')
     : `<p class="empty">${emptyMessage}</p>`;
 }
 

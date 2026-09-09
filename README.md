@@ -6,7 +6,7 @@ Tableau de bord personnel mobile-first en HTML, CSS et JavaScript vanilla, sans 
 
 - notes ;
 - sessions techniques archivées par `protocole omega`, chacune avec un identifiant de référence ;
-- projets locaux avec résumés dépliables ;
+- projets locaux avec résumés dépliables et liens GitHub lorsqu'un remote existe ;
 - liens vers des pages Demo dédiées ;
 - une Demo Mermaid chargée depuis un fichier `.mmd` et rendue dans une page dédiée ;
 - thème clair/sombre pour la consultation.
