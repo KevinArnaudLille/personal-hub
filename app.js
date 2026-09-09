@@ -22,9 +22,6 @@ const esc = value => { const node = document.createElement('div'); node.textCont
 function render() {
   document.getElementById('today').textContent = new Intl.DateTimeFormat('fr-FR', { dateStyle: 'long' }).format(new Date());
   document.getElementById('updated-at').textContent = `Contenu : ${hub.updatedAt}`;
-  document.getElementById('note-count').textContent = hub.notes.length;
-  document.getElementById('session-count').textContent = hub.sessions.length;
-  document.getElementById('project-count').textContent = hub.projects.length;
   document.getElementById('note-list').innerHTML = hub.notes.length
     ? hub.notes.map(note => `<article class="note"><strong>${esc(note.title)}</strong><p>${esc(note.body)}</p></article>`).join('')
     : `<p class="empty">${emptyMessage}</p>`;
