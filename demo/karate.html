@@ -30,6 +30,7 @@
     .avatar-belt { stroke: #e76f51; stroke-width: 3; }
     .avatar-head { fill: #e5b998; stroke: #17201b; stroke-width: 2; }
     .board-label { fill: #777870; font: 600 12px ui-sans-serif, system-ui, sans-serif; letter-spacing: .08em; }
+    .reference-planche { border-top: 1px solid var(--line); margin-top: 16px; padding-top: 16px; }.reference-planche img { background: #fff; border: 1px solid var(--line); border-radius: 9px; display: block; max-height: 280px; max-width: 100%; margin: 0 auto; }.reference-planche figcaption { color: var(--muted); font-size: 10px; line-height: 1.45; margin-top: 8px; }.reference-planche a { color: var(--olive); }
     .step-panel { align-items: center; display: flex; gap: 13px; justify-content: space-between; margin-top: 14px; }
     .step-counter { color: var(--muted); font: 700 12px ui-monospace, monospace; white-space: nowrap; }
     .controls { display: flex; flex-wrap: wrap; gap: 7px; }
@@ -81,6 +82,10 @@
             </g>
           </svg>
         </div>
+        <figure class="reference-planche">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/f/f7/HeianShodan-ShotokanEmbusen.svg" alt="Embusen de référence Shotokan pour Heian Shodan">
+          <figcaption>Planche de référence Shotokan : <a href="https://commons.wikimedia.org/wiki/File:HeianShodan-ShotokanEmbusen.svg" target="_blank" rel="noopener">Wikimedia Commons</a>, œuvre de Chrkl. L’animation ci-dessus sert de repère pédagogique pour l’ordre des mouvements.</figcaption>
+        </figure>
         <div class="step-panel"><span id="step-counter" class="step-counter"></span><div class="controls"><button id="prev" class="control-button" type="button">← Précédent</button><button id="play" class="control-button primary" type="button">▶ Lire</button><button id="next" class="control-button" type="button">Suivant →</button></div></div>
         <label class="speed">Vitesse <input id="speed" type="range" min="0.5" max="2" value="1" step="0.25"><span id="speed-value">1×</span></label>
       </article>
@@ -91,24 +96,36 @@
         <div id="instruction" class="instruction"></div>
         <ol id="step-list" class="step-list"></ol>
         <p class="notice">Support visuel pédagogique : les détails techniques, la respiration et le rythme doivent être corrigés avec un professeur qualifié. Les variantes peuvent différer selon l’école.</p>
+        <p class="notice">Sources croisées : <a href="https://www.atsk.co.uk/heian-shodan" target="_blank" rel="noopener">ATSK</a>, <a href="https://karate-notes.com/en/katas/heian-en/heian-shodan-en/" target="_blank" rel="noopener">Karate Notes</a> et <a href="https://www.shotokankarateonline.com/blog/heian-shodan-kata-tutorial/" target="_blank" rel="noopener">Shotokan Karate Online</a>.</p>
       </aside>
     </section>
   </main>
   <script>
     document.getElementById('theme-toggle').addEventListener('click', () => document.body.classList.toggle('dark'));
     const steps = [
-      { x: 360, y: 300, facing: 0, title: 'Préparation', detail: 'Position de départ : posture stable, regard dans l’axe et respiration calme.' },
-      { x: 220, y: 300, facing: 270, title: 'Gedan-barai à gauche', detail: 'Rotation et déplacement vers la gauche de la planche. Cherche une trajectoire nette.' },
-      { x: 100, y: 300, facing: 270, title: 'Oi-zuki', detail: 'Avancer dans la même direction avec un coup de poing direct.' },
-      { x: 100, y: 150, facing: 0, title: 'Gedan-barai en rotation', detail: 'Tourner sur place puis repartir dans le nouvel axe.' },
-      { x: 220, y: 150, facing: 90, title: 'Oi-zuki', detail: 'Avancer avec contrôle, en gardant le bassin engagé.' },
-      { x: 360, y: 150, facing: 90, title: 'Oi-zuki', detail: 'Deuxième déplacement dans l’axe, posture verticale.' },
-      { x: 500, y: 150, facing: 90, title: 'Oi-zuki', detail: 'Continuer la ligne et terminer chaque technique avant de repartir.' },
-      { x: 620, y: 150, facing: 90, title: 'Gedan-barai', detail: 'Fin de la ligne : préparer la rotation et le changement de direction.' },
-      { x: 620, y: 300, facing: 180, title: 'Rotation arrière', detail: 'Tourner vers l’arrière de la planche sans perdre l’équilibre.' },
-      { x: 500, y: 300, facing: 270, title: 'Oi-zuki', detail: 'Revenir vers l’axe central avec un déplacement régulier.' },
-      { x: 360, y: 300, facing: 270, title: 'Retour dans l’axe', detail: 'Finir la séquence en retrouvant la ligne de départ.' }
+      { x: 300, y: 330, facing: 270, title: '1 · Hidari Gedan Barai', detail: 'Gedan-barai gauche · zenkutsu-dachi. Premier mouvement après yoi.' },
+      { x: 170, y: 330, facing: 270, title: '2 · Migi Chudan Oi Zuki', detail: 'Oi-zuki chudan droit · zenkutsu-dachi.' },
+      { x: 170, y: 210, facing: 90, title: '3 · Migi Gedan Barai', detail: 'Gedan-barai droit · zenkutsu-dachi, avec changement de direction.' },
+      { x: 170, y: 210, facing: 90, title: '4 · Migi Tetsui Uchi', detail: 'Tetsui-uchi droit · zenkutsu-dachi court selon la nomenclature ATSK. Le détail du pas varie selon les écoles.' },
+      { x: 300, y: 210, facing: 90, title: '5 · Hidari Chudan Oi Zuki', detail: 'Oi-zuki chudan gauche · zenkutsu-dachi.' },
+      { x: 430, y: 210, facing: 90, title: '6 · Hidari Gedan Barai', detail: 'Gedan-barai gauche · zenkutsu-dachi, changement de direction.' },
+      { x: 500, y: 210, facing: 90, title: '7 · Migi Jodan Age Uke', detail: 'Age-uke jodan droit · zenkutsu-dachi.' },
+      { x: 570, y: 210, facing: 90, title: '8 · Hidari Jodan Age Uke', detail: 'Age-uke jodan gauche · zenkutsu-dachi.' },
+      { x: 640, y: 210, facing: 90, title: '9 · Migi Jodan Age Uke · KIAI', detail: 'Troisième age-uke jodan, droit · zenkutsu-dachi. Premier kiai.' },
+      { x: 640, y: 110, facing: 270, title: '10 · Hidari Gedan Barai', detail: 'Gedan-barai gauche · zenkutsu-dachi, rotation de retour.' },
+      { x: 510, y: 110, facing: 270, title: '11 · Migi Chudan Oi Zuki', detail: 'Oi-zuki chudan droit · zenkutsu-dachi.' },
+      { x: 380, y: 110, facing: 270, title: '12 · Migi Gedan Barai', detail: 'Gedan-barai droit · zenkutsu-dachi, nouveau changement de direction.' },
+      { x: 250, y: 110, facing: 270, title: '13 · Hidari Chudan Oi Zuki', detail: 'Oi-zuki chudan gauche · zenkutsu-dachi.' },
+      { x: 120, y: 110, facing: 270, title: '14 · Hidari Gedan Barai', detail: 'Gedan-barai gauche · zenkutsu-dachi, retour vers l’axe de départ.' },
+      { x: 120, y: 210, facing: 90, title: '15 · Migi Chudan Oi Zuki', detail: 'Oi-zuki chudan droit · zenkutsu-dachi.' },
+      { x: 250, y: 210, facing: 90, title: '16 · Hidari Chudan Oi Zuki', detail: 'Oi-zuki chudan gauche · zenkutsu-dachi.' },
+      { x: 380, y: 210, facing: 90, title: '17 · Migi Chudan Oi Zuki · KIAI', detail: 'Oi-zuki chudan droit · zenkutsu-dachi. Deuxième kiai et fin de la série de coups de poing.' },
+      { x: 480, y: 290, facing: 180, title: '18 · Hidari Chudan Shuto Uke', detail: 'Shuto-uke chudan gauche · kokutsu-dachi.' },
+      { x: 540, y: 340, facing: 135, title: '19 · Migi Chudan Shuto Uke', detail: 'Shuto-uke chudan droit · kokutsu-dachi. Pas à 45 degrés dans la description Shotokan croisée.' },
+      { x: 480, y: 390, facing: 315, title: '20 · Migi Chudan Shuto Uke', detail: 'Shuto-uke chudan droit · kokutsu-dachi, changement de direction.' },
+      { x: 400, y: 340, facing: 225, title: '21 · Hidari Chudan Shuto Uke', detail: 'Shuto-uke chudan gauche · kokutsu-dachi. Fin de la séquence, puis yame et rei.' }
     ];
+    document.getElementById('embusen').setAttribute('points', steps.map(step => `${step.x},${step.y}`).join(' '));
     const avatar = document.getElementById('avatar');
     const dots = document.getElementById('step-dots');
     const list = document.getElementById('step-list');
