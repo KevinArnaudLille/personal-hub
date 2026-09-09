@@ -40,6 +40,7 @@
     .speed { align-items: center; color: var(--muted); display: flex; font-size: 11px; gap: 7px; margin-top: 11px; }
     .speed input { accent-color: var(--accent); width: 130px; }
     .instruction { border-left: 3px solid var(--accent); background: color-mix(in srgb,var(--accent) 8%,transparent); border-radius: 0 9px 9px 0; margin-top: 15px; padding: 13px; }
+    .technique-figure { background: var(--bg); border: 1px solid var(--line); border-radius: 10px; margin: 0 0 12px; padding: 8px; }.technique-figure svg { display: block; height: 125px; margin: 0 auto; max-width: 100%; }.technique-figure .figure-head { fill: #e5b998; stroke: #26352d; stroke-width: 2; }.technique-figure .figure-body { fill: #26352d; stroke: #17201b; stroke-width: 2; }.technique-figure .figure-belt { stroke: #e76f51; stroke-width: 4; }.technique-figure .figure-limb { fill: none; stroke: #26352d; stroke-linecap: round; stroke-width: 6; }.technique-figure .figure-accent { fill: none; stroke: #e76f51; stroke-linecap: round; stroke-width: 5; }.technique-caption { color: var(--muted); font-size: 10px; margin: 5px 0 0; text-align: center; }
     .instruction .step-kicker { color: var(--accent-dark); font-size: 10px; font-weight: 800; letter-spacing: .16em; margin: 0 0 5px; }
     .instruction h3 { font-size: 17px; margin: 0 0 5px; }
     .instruction p { color: var(--muted); font-size: 13px; line-height: 1.5; margin: 0; }
@@ -67,10 +68,15 @@
         <h2>Planche du kata</h2>
         <p>Utilise la lecture automatique ou avance étape par étape.</p>
         <div class="planche-wrap">
+          <figure class="reference-planche">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/f/f7/HeianShodan-ShotokanEmbusen.svg" alt="Embusen de référence Shotokan pour Heian Shodan">
+            <figcaption>Embusen de référence Shotokan : <a href="https://commons.wikimedia.org/wiki/File:HeianShodan-ShotokanEmbusen.svg" target="_blank" rel="noopener">Wikimedia Commons</a>, œuvre de Chrkl.</figcaption>
+          </figure>
+          <p class="eyebrow" style="padding:12px 14px 0">ANIMATION DES REPÈRES</p>
           <svg id="kata-board" viewBox="0 0 720 430" role="img" aria-label="Planche animée des déplacements du kata Heian Shodan">
             <rect class="floor" width="720" height="430"/>
             <path class="floor-line" d="M0 86h720M0 172h720M0 258h720M0 344h720M144 0v430M288 0v430M432 0v430M576 0v430"/>
-            <text class="board-label" x="22" y="30">EMBUSEN · REPÈRES DE DÉPLACEMENT</text>
+            <text class="board-label" x="22" y="30">ANIMATION · ORDRE DES MOUVEMENTS</text>
             <polyline id="embusen" class="embusen" points="360,300 220,300 100,300 100,150 220,150 360,150 500,150 620,150 620,300 500,300 360,300"/>
             <g id="step-dots"></g>
             <g id="avatar" transform="translate(360 300)">
@@ -82,10 +88,6 @@
             </g>
           </svg>
         </div>
-        <figure class="reference-planche">
-          <img src="https://upload.wikimedia.org/wikipedia/commons/f/f7/HeianShodan-ShotokanEmbusen.svg" alt="Embusen de référence Shotokan pour Heian Shodan">
-          <figcaption>Planche de référence Shotokan : <a href="https://commons.wikimedia.org/wiki/File:HeianShodan-ShotokanEmbusen.svg" target="_blank" rel="noopener">Wikimedia Commons</a>, œuvre de Chrkl. L’animation ci-dessus sert de repère pédagogique pour l’ordre des mouvements.</figcaption>
-        </figure>
         <div class="step-panel"><span id="step-counter" class="step-counter"></span><div class="controls"><button id="prev" class="control-button" type="button">← Précédent</button><button id="play" class="control-button primary" type="button">▶ Lire</button><button id="next" class="control-button" type="button">Suivant →</button></div></div>
         <label class="speed">Vitesse <input id="speed" type="range" min="0.5" max="2" value="1" step="0.25"><span id="speed-value">1×</span></label>
       </article>
@@ -96,6 +98,7 @@
         <div id="instruction" class="instruction"></div>
         <ol id="step-list" class="step-list"></ol>
         <p class="notice">Support visuel pédagogique : les détails techniques, la respiration et le rythme doivent être corrigés avec un professeur qualifié. Les variantes peuvent différer selon l’école.</p>
+        <p class="notice">Les silhouettes sont des illustrations schématiques originales ; les sources citées documentent les techniques et les positions, pas ces dessins.</p>
         <p class="notice">Sources croisées : <a href="https://www.atsk.co.uk/heian-shodan" target="_blank" rel="noopener">ATSK</a>, <a href="https://karate-notes.com/en/katas/heian-en/heian-shodan-en/" target="_blank" rel="noopener">Karate Notes</a> et <a href="https://www.shotokankarateonline.com/blog/heian-shodan-kata-tutorial/" target="_blank" rel="noopener">Shotokan Karate Online</a>.</p>
       </aside>
     </section>
@@ -139,6 +142,18 @@
     dots.innerHTML = steps.map((step, index) => `<circle class="step-dot" data-step="${index}" cx="${step.x}" cy="${step.y}" r="12"/><text class="step-number" data-step="${index}" x="${step.x}" y="${step.y}">${index + 1}</text>`).join('');
     list.innerHTML = steps.map((step, index) => `<li><button type="button" data-step-button="${index}"><b>${String(index + 1).padStart(2, '0')}</b><span>${step.title}</span></button></li>`).join('');
 
+    function techniqueFigure(title) {
+      const name = title.toLowerCase();
+      let arms = '<path class="figure-limb" d="M72 58 48 86M88 58 112 86"/>';
+      let caption = 'Posture schématique';
+      if (name.includes('gedan')) { arms = '<path class="figure-limb" d="M72 58 48 86M88 58 118 75"/><path class="figure-accent" d="M118 75 132 92"/>'; caption = 'Gedan-barai · bloc bas'; }
+      if (name.includes('oi zuki')) { arms = '<path class="figure-limb" d="M72 58 48 86M88 58 132 58"/><path class="figure-accent" d="M132 58 146 58"/>'; caption = 'Oi-zuki · coup de poing direct'; }
+      if (name.includes('age uke')) { arms = '<path class="figure-limb" d="M72 58 48 86M88 58 116 32"/><path class="figure-accent" d="M116 32 132 18"/>'; caption = 'Age-uke · bloc haut'; }
+      if (name.includes('tetsui')) { arms = '<path class="figure-limb" d="M72 58 48 86M88 58 119 82"/><path class="figure-accent" d="M119 82 130 102"/>'; caption = 'Tetsui-uchi · marteau'; }
+      if (name.includes('shuto')) { arms = '<path class="figure-limb" d="M72 58 38 45M88 58 122 45"/><path class="figure-accent" d="M38 45 24 31M122 45 136 31"/>'; caption = 'Shuto-uke · main ouverte'; }
+      return `<div class="technique-figure"><svg viewBox="0 0 160 125" role="img" aria-label="${caption}"><circle class="figure-head" cx="80" cy="25" r="10"/><path class="figure-body" d="M67 42 80 34 93 42 91 76H69z"/><path class="figure-belt" d="M69 62h22"/><path class="figure-limb" d="M72 74 57 108M88 74 103 108"/>${arms}</svg><p class="technique-caption">${caption} · illustration schématique</p></div>`;
+    }
+
     function showStep(index) {
       current = (index + steps.length) % steps.length;
       const step = steps[current];
@@ -146,7 +161,7 @@
       document.querySelectorAll('[data-step]').forEach(node => node.classList.toggle('active', Number(node.dataset.step) === current));
       document.querySelectorAll('[data-step-button]').forEach(node => node.classList.toggle('active', Number(node.dataset.stepButton) === current));
       counter.textContent = `ÉTAPE ${String(current + 1).padStart(2, '0')} / ${steps.length}`;
-      instruction.innerHTML = `<p class="step-kicker">ÉTAPE ${String(current + 1).padStart(2, '0')}</p><h3>${step.title}</h3><p>${step.detail}</p>`;
+      instruction.innerHTML = `<p class="step-kicker">ÉTAPE ${String(current + 1).padStart(2, '0')}</p>${techniqueFigure(step.title)}<h3>${step.title}</h3><p>${step.detail}</p>`;
     }
     function tick() { showStep(current + 1); timer = setTimeout(tick, 1800 / Number(speed.value)); }
     function togglePlay() { playing = !playing; play.textContent = playing ? '❚❚ Pause' : '▶ Lire'; if (playing) tick(); else clearTimeout(timer); }
