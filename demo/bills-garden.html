@@ -70,7 +70,8 @@
     document.getElementById('theme-toggle').addEventListener('click', () => document.body.classList.toggle('dark'));
     const bill = document.getElementById('bill'); const billPose = document.getElementById('bill-pose'); const heart = document.getElementById('heart'); const mood = document.getElementById('mood'); const happiness = document.getElementById('happiness');
     let joy = 50; let x = 310; let direction = 1; let last = performance.now();
-    function showHeart() { heart.classList.remove('show'); void heart.offsetWidth; heart.classList.add('show'); billPose.classList.remove('happy'); void billPose.offsetWidth; billPose.classList.add('happy'); }
+    function restartAnimation(node, className) { node.classList.remove(className); node.getAnimations().forEach(animation => animation.cancel()); void node.offsetWidth; node.classList.add(className); }
+    function showHeart() { restartAnimation(heart, 'show'); restartAnimation(billPose, 'happy'); }
     function interact(action) { const messages = { kibble: 'Bill adore ses croquettes.', pate: 'Bill se régale de sa pâtée.', pet: 'Bill ronronne sous la caresse.' }; joy = Math.min(100, joy + (action === 'pate' ? 9 : 6)); mood.textContent = messages[action]; happiness.textContent = `BONHEUR ${joy}`; showHeart(); }
     document.querySelectorAll('[data-action]').forEach(button => button.addEventListener('click', () => interact(button.dataset.action)));
     bill.addEventListener('click', () => interact('pet')); bill.addEventListener('keydown', event => { if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); interact('pet'); } });
