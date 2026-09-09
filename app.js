@@ -1,7 +1,10 @@
 /* Read-only content maintained by Hermes from Telegram requests. */
 const hub = {
   updatedAt: 'Dernière mise à jour via Telegram',
-  notes: [{ title: 'Note Telegram', body: 'pensé à passer l\'aspirateur partout.' }],
+  notes: [
+    { title: 'Note Telegram', body: 'pensé à passer l\'aspirateur partout.' },
+    { title: 'Note Telegram', body: 'commandez une nouvelle table de salamanger.' }
+  ],
   sessions: [{
     id: 'S-20260908-001',
     title: 'Progressive disclosure',
