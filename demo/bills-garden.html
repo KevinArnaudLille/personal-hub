@@ -18,6 +18,7 @@
     #garden .sky { fill: #d9edf2; }.ground { fill: #9bc477; }.ground-line { stroke: #6fa05b; stroke-width: 5; }.hill { fill: #b8d89d; }.sun { fill: #f7c96b; opacity: .9; }
     .flower-stem { stroke: #578e51; stroke-linecap: round; stroke-width: 3; }.flower-petal { fill: #e76f82; }.flower-petal.yellow { fill: #f4c85d; }.flower-center { fill: #f3e5a3; }.cloud { fill: #fff; opacity: .7; }
     #bill { cursor: pointer; transform-box: fill-box; transform-origin: center bottom; transition: none; }.bill-body { fill: #c8783e; stroke: #713e29; stroke-width: 3; }.bill-belly { fill: #f1c99a; }.bill-ear { fill: #a75d35; stroke: #713e29; stroke-width: 3; }.bill-ear-inner { fill: #e7a48d; }.bill-eye { fill: #26352d; }.bill-nose { fill: #61332b; }.bill-mouth { fill: none; stroke: #61332b; stroke-linecap: round; stroke-width: 2; }.bill-tail { fill: none; stroke: #a75d35; stroke-linecap: round; stroke-width: 8; }.bill-paw { fill: #f1c99a; stroke: #713e29; stroke-width: 2; }
+    #bill-pose.happy { animation: bill-hop .52s ease-out; }@keyframes bill-hop { 0%,100% { transform: translateY(0) rotate(0); } 35% { transform: translateY(-9px) rotate(-3deg); } 65% { transform: translateY(-4px) rotate(2deg); } }
     .heart { fill: #e76f82; opacity: 0; pointer-events: none; }.heart.show { animation: float-heart 1.7s ease-out forwards; }@keyframes float-heart { 0% { opacity: 0; transform: translateY(8px) scale(.5); } 20% { opacity: 1; } 100% { opacity: 0; transform: translateY(-54px) scale(1.1); } }
     .bill-status { align-items: center; display: flex; justify-content: space-between; margin: 13px 0 10px; }.mood { color: var(--olive); font-size: 13px; font-weight: 700; }.happiness { color: var(--muted); font: 700 12px ui-monospace, monospace; }
     .bill-controls { display: grid; gap: 8px; grid-template-columns: repeat(3, 1fr); }.bill-button { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; color: var(--ink); min-height: 44px; padding: 8px 6px; }.bill-button:hover { border-color: var(--accent); }.bill-button span { display: block; font-size: 19px; }.bill-button small { color: var(--muted); font-size: 10px; }.bill-note { color: var(--muted); font-size: 11px; line-height: 1.45; margin: 14px 0 0; }
@@ -48,6 +49,7 @@
         <g transform="translate(520 285)"><path class="flower-stem" d="M0 27V0"/><circle class="flower-center" cx="0" cy="0" r="5"/><circle class="flower-petal yellow" cx="-8" cy="0" r="6"/><circle class="flower-petal yellow" cx="8" cy="0" r="6"/><circle class="flower-petal yellow" cx="0" cy="-8" r="6"/></g>
         <g transform="translate(185 305)"><path class="flower-stem" d="M0 18V0"/><circle class="flower-center" cx="0" cy="0" r="4"/><circle class="flower-petal" cx="-7" cy="0" r="5"/><circle class="flower-petal" cx="7" cy="0" r="5"/></g>
         <g id="bill" transform="translate(310 238)" role="button" tabindex="0" aria-label="Caresser Bill">
+          <g id="bill-pose">
           <path class="bill-tail" d="M42 54Q76 35 58 7"/>
           <ellipse class="bill-body" cx="0" cy="43" rx="37" ry="39"/>
           <ellipse class="bill-belly" cx="0" cy="52" rx="22" ry="25"/>
@@ -56,6 +58,7 @@
           <circle class="bill-eye" cx="-12" cy="18" r="4"/><circle class="bill-eye" cx="12" cy="18" r="4"/><circle class="bill-nose" cx="0" cy="28" r="3"/><path class="bill-mouth" d="M0 30q-5 8-10 2M0 30q5 8 10 2"/>
           <ellipse class="bill-paw" cx="-25" cy="72" rx="11" ry="7"/><ellipse class="bill-paw" cx="25" cy="72" rx="11" ry="7"/>
           <text class="heart" id="heart" x="-8" y="-25" font-size="28">♥</text>
+          </g>
         </g>
       </svg>
       <div class="bill-status"><span id="mood" class="mood">Bill est tranquille.</span><span id="happiness" class="happiness">BONHEUR 50</span></div>
@@ -65,13 +68,13 @@
   </main>
   <script>
     document.getElementById('theme-toggle').addEventListener('click', () => document.body.classList.toggle('dark'));
-    const bill = document.getElementById('bill'); const heart = document.getElementById('heart'); const mood = document.getElementById('mood'); const happiness = document.getElementById('happiness');
-    let joy = 50; let x = 310; let direction = 1; let last = performance.now(); let happyUntil = 0;
-    function showHeart() { heart.classList.remove('show'); void heart.offsetWidth; heart.classList.add('show'); happyUntil = performance.now() + 520; }
+    const bill = document.getElementById('bill'); const billPose = document.getElementById('bill-pose'); const heart = document.getElementById('heart'); const mood = document.getElementById('mood'); const happiness = document.getElementById('happiness');
+    let joy = 50; let x = 310; let direction = 1; let last = performance.now();
+    function showHeart() { heart.classList.remove('show'); void heart.offsetWidth; heart.classList.add('show'); billPose.classList.remove('happy'); void billPose.offsetWidth; billPose.classList.add('happy'); }
     function interact(action) { const messages = { kibble: 'Bill adore ses croquettes.', pate: 'Bill se régale de sa pâtée.', pet: 'Bill ronronne sous la caresse.' }; joy = Math.min(100, joy + (action === 'pate' ? 9 : 6)); mood.textContent = messages[action]; happiness.textContent = `BONHEUR ${joy}`; showHeart(); }
     document.querySelectorAll('[data-action]').forEach(button => button.addEventListener('click', () => interact(button.dataset.action)));
     bill.addEventListener('click', () => interact('pet')); bill.addEventListener('keydown', event => { if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); interact('pet'); } });
-    function move(now) { const delta = Math.min(32, now - last); last = now; x += direction * delta * .035; if (x > 515) { x = 515; direction = -1; } if (x < 95) { x = 95; direction = 1; } const remaining = Math.max(0, happyUntil - now); const jump = remaining ? Math.sin((1 - remaining / 520) * Math.PI) * 9 : 0; const tilt = remaining ? Math.sin((1 - remaining / 520) * Math.PI) * (direction * -3) : 0; bill.setAttribute('transform', `translate(${x} ${238 - jump}) scale(${direction < 0 ? -1 : 1} 1) rotate(${tilt})`); requestAnimationFrame(move); }
+    function move(now) { const delta = Math.min(32, now - last); last = now; x += direction * delta * .035; if (x > 515) { x = 515; direction = -1; } if (x < 95) { x = 95; direction = 1; } bill.setAttribute('transform', `translate(${x} 238) scale(${direction < 0 ? -1 : 1} 1)`); requestAnimationFrame(move); }
     requestAnimationFrame(move);
   </script>
 </body>
