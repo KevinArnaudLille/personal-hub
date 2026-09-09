@@ -76,8 +76,8 @@
           <svg id="kata-board" viewBox="0 0 720 430" role="img" aria-label="Planche animée des déplacements du kata Heian Shodan">
             <rect class="floor" width="720" height="430"/>
             <path class="floor-line" d="M0 86h720M0 172h720M0 258h720M0 344h720M144 0v430M288 0v430M432 0v430M576 0v430"/>
-            <text class="board-label" x="22" y="30">ANIMATION · ORDRE DES MOUVEMENTS</text>
-            <path id="embusen" class="embusen" d="M100 350H620M360 350V80M100 80H620M360 350L180 190M360 350L540 190"/>
+            <text class="board-label" x="22" y="30">ANIMATION · EMBUSEN DE RÉFÉRENCE</text>
+            <path id="embusen" class="embusen" d="M70 250H650M360 50V420M360 420L170 320L330 250M360 50L520 170L390 250"/>
             <g id="step-dots"></g>
             <g id="avatar" transform="translate(360 300)">
               <ellipse class="avatar-shadow" cx="0" cy="14" rx="17" ry="6"/>
@@ -128,7 +128,7 @@
       { x: 480, y: 390, facing: 315, title: '20 · Migi Chudan Shuto Uke', detail: 'Shuto-uke chudan droit · kokutsu-dachi, changement de direction.' },
       { x: 400, y: 340, facing: 225, title: '21 · Hidari Chudan Shuto Uke', detail: 'Shuto-uke chudan gauche · kokutsu-dachi. Fin de la séquence, puis yame et rei.' }
     ];
-    const guidePositions = [[300,350],[220,350],[140,350],[140,350],[220,350],[300,350],[380,350],[460,350],[540,350],[360,350],[360,260],[360,200],[360,140],[360,80],[260,80],[180,80],[100,80],[300,295],[240,245],[420,295],[480,245]];
+    const guidePositions = [[520,250],[640,250],[200,250],[80,250],[360,310],[360,360],[360,400],[360,420],[270,370],[190,320],[260,275],[330,250],[360,200],[360,150],[360,100],[360,50],[440,110],[520,170],[460,215],[400,240],[360,250]];
     steps.forEach((step, index) => { [step.x, step.y] = guidePositions[index]; });
     const avatar = document.getElementById('avatar');
     const dots = document.getElementById('step-dots');
