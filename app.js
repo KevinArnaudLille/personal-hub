@@ -10,12 +10,7 @@ const hub = {
   projects: [
     { title: 'LifeDrop', summary: 'Petite simulation de vie en Godot 4 avec C#. On dépose des créatures qui se déplacent, vieillissent, se reproduisent ou se dévorent lorsqu’une créature plus grosse rencontre une plus petite.', path: 'life_drop_godot' },
     { title: 'Neon Snake Remix', summary: 'Remix néon de Snake en Python avec Tkinter, avec contrôles clavier, pause, redémarrage et téléportation du serpent d’un bord à l’autre.', path: 'snake_remix' }
-  ],
-  diagrams: [{
-    title: 'Cycle de mise à jour du Personal Hub',
-    summary: 'De la demande Telegram ou CLI jusqu’à la consultation sur téléphone.',
-    src: 'diagrams/personal-hub-flow.mmd'
-  }]
+  ]
 };
 
 const emptyMessage = 'Rien à afficher pour le moment.';
@@ -27,7 +22,6 @@ function render() {
   document.getElementById('note-count').textContent = hub.notes.length;
   document.getElementById('session-count').textContent = hub.sessions.length;
   document.getElementById('project-count').textContent = hub.projects.length;
-  document.getElementById('diagram-count').textContent = hub.diagrams.length;
   document.getElementById('note-list').innerHTML = hub.notes.length
     ? hub.notes.map(note => `<article class="note"><strong>${esc(note.title)}</strong><p>${esc(note.body)}</p></article>`).join('')
     : `<p class="empty">${emptyMessage}</p>`;
@@ -36,9 +30,6 @@ function render() {
     : `<p class="empty">${emptyMessage}</p>`;
   document.getElementById('project-list').innerHTML = hub.projects.length
     ? hub.projects.map(project => `<details class="project"><summary>${esc(project.title)}</summary><div class="project-summary"><p>${esc(project.summary)}</p><code>~/projects/${esc(project.path)}</code></div></details>`).join('')
-    : `<p class="empty">${emptyMessage}</p>`;
-  document.getElementById('diagram-list').innerHTML = hub.diagrams.length
-    ? hub.diagrams.map(diagram => `<article class="diagram"><h3>${esc(diagram.title)}</h3><p>${esc(diagram.summary)}</p><div class="diagram-host" data-mermaid-src="${esc(diagram.src)}"><p class="muted">Chargement du diagramme…</p></div></article>`).join('')
     : `<p class="empty">${emptyMessage}</p>`;
 }
 

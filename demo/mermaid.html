@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Demo de rendu Mermaid dans le Personal Hub.">
+  <title>Demo Mermaid · Personal Hub</title>
+  <link rel="stylesheet" href="../style.css">
+  <style>
+    .demo-page { max-width: 980px; padding-top: 32px; }
+    .back-link { color: var(--olive); display: inline-block; font-size: 13px; margin-bottom: 32px; text-decoration: none; }
+    .back-link:hover { text-decoration: underline; }
+    .demo-card { background: var(--surface); border: 1px solid var(--line); border-radius: 16px; box-shadow: var(--shadow); margin-top: 28px; padding: 18px; }
+    .demo-card h2 { font-size: 20px; margin: 0 0 7px; }
+    .demo-card > p { color: var(--muted); font-size: 13px; line-height: 1.5; margin: 0 0 18px; }
+    .diagram-host { background: var(--bg); border: 1px solid var(--line); border-radius: 9px; min-height: 120px; overflow: auto; padding: 8px; }
+    .diagram-host .mermaid { min-width: 0; text-align: center; width: 100%; }
+    .diagram-host svg { display: block; height: auto; max-width: 100%; width: 100%; }
+    .diagram-error { color: var(--accent-dark); font-size: 12px; margin: 8px; }
+    .source-note { color: var(--muted); font-size: 11px; margin-top: 14px; }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="../index.html"><span class="brand-mark">✦</span> Personal Hub</a>
+    <div class="top-actions"><span class="muted">DEMO</span><button id="theme-toggle" class="icon-button" type="button" aria-label="Changer de thème">☼</button></div>
+  </header>
+  <main class="shell demo-page">
+    <a class="back-link" href="../index.html">← Retour au Personal Hub</a>
+    <p class="eyebrow">DÉMONSTRATION</p>
+    <h1>Rendu <em>Mermaid.</em></h1>
+    <p class="intro-copy">Cette page montre comment un fichier Mermaid est chargé puis rendu en diagramme dans le navigateur.</p>
+    <article class="demo-card">
+      <h2>Cycle de mise à jour du Personal Hub</h2>
+      <p>Le diagramme est chargé depuis un fichier `.mmd` par le même principe que dans le projet `IG2I-cours`.</p>
+      <div class="diagram-host" data-mermaid-src="../diagrams/personal-hub-flow.mmd"><p class="muted">Chargement du diagramme…</p></div>
+      <p class="source-note">Source : <code>diagrams/personal-hub-flow.mmd</code></p>
+    </article>
+  </main>
+  <script>
+    document.getElementById('theme-toggle').addEventListener('click', () => document.body.classList.toggle('dark'));
+  </script>
+  <script type="module" src="../mermaid-loader.js"></script>
+</body>
+</html>

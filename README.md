@@ -7,7 +7,8 @@ Tableau de bord personnel mobile-first en HTML, CSS et JavaScript vanilla, sans 
 - notes ;
 - sessions techniques archivées par `protocole omega`, chacune avec un identifiant de référence ;
 - projets locaux avec résumés dépliables ;
-- diagrammes Mermaid chargés depuis des fichiers `.mmd` et rendus dans la page ;
+- liens vers des pages Demo dédiées ;
+- une Demo Mermaid chargée depuis un fichier `.mmd` et rendue dans une page dédiée ;
 - thème clair/sombre pour la consultation.
 
 Aucune donnée n'est saisie sur la page et aucun formulaire n'est présent. Pour modifier le contenu, il suffit d'envoyer une demande à Hermes sur Telegram.
