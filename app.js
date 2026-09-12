@@ -15,6 +15,7 @@ const hub = {
     { title: 'Neon Snake Remix', summary: 'Remix néon de Snake en Python avec Tkinter, avec contrôles clavier, pause, redémarrage et téléportation du serpent d’un bord à l’autre.', path: 'snake_remix', url: 'https://github.com/KevinArnaudLille/snake-remix' }
   ],
   cadrages: [{
+    id: 'cadrage-stack-europeenne',
     title: 'Stack web européenne',
     summary: 'Cadrage d’une stack complète et sécurisée : Clever Cloud, PostgreSQL, ZITADEL et CI/CD GitHub Actions.',
     url: 'cadrages/stack-europeenne.html'
@@ -37,7 +38,7 @@ function render() {
     ? hub.projects.map(project => `<details class="project"><summary>${esc(project.title)}</summary><div class="project-summary"><p>${esc(project.summary)}</p><code>~/projects/${esc(project.path)}</code>${project.url ? `<a class="project-link" href="${esc(project.url)}" target="_blank" rel="noopener">Voir sur GitHub ↗</a>` : ''}</div></details>`).join('')
     : `<p class="empty">${emptyMessage}</p>`;
   document.getElementById('cadrage-list').innerHTML = hub.cadrages.length
-    ? hub.cadrages.map(cadrage => `<a class="cadrage-link" href="${esc(cadrage.url)}"><span><strong>${esc(cadrage.title)}</strong><small>${esc(cadrage.summary)}</small></span><span aria-hidden="true">→</span></a>`).join('')
+    ? hub.cadrages.map(cadrage => `<a id="${esc(cadrage.id)}" class="cadrage-link" href="${esc(cadrage.url)}"><span><strong>${esc(cadrage.title)}</strong><small>${esc(cadrage.summary)}</small></span><span aria-hidden="true">→</span></a>`).join('')
     : `<p class="empty">Aucun cadrage en cours. <a href="cadrages.html">Voir l’espace des cadrages</a> · CA1 permet d’en commencer un, CA2 de le poursuivre.</p>`
 }
 

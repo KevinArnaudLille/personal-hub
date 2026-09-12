@@ -19,8 +19,8 @@
     <h1>Stack web <em>européenne.</em></h1>
     <p class="protocol-intro">Remplacer GitHub Pages par une application complète — authentification, API et base relationnelle — sans perdre GitHub comme point d'entrée ni la simplicité de déploiement.</p>
 
-    <section class="protocol-groups">
-      <article class="protocol-group">
+    <section id="cadrage-stack-europeenne" class="protocol-groups">
+      <article id="recommandation-depart" class="protocol-group">
         <p class="eyebrow">RECOMMANDATION DE DÉPART</p>
         <h2>Clever Cloud + ZITADEL</h2>
         <p><strong>Clever Cloud</strong> est le meilleur compromis initial : PaaS français, déploiement depuis GitHub, PostgreSQL managé, sauvegardes, monitoring et montée en charge sans administrer Kubernetes. Choisir une région et une base en France.</p>
@@ -28,17 +28,17 @@
         <p class="muted">Point important : GitHub Actions reste le moteur CI/CD, mais les secrets de production ne doivent pas être copiés dans le dépôt. Les permissions GitHub, les environnements protégés et un secret manager côté cloud sont obligatoires.</p>
       </article>
 
-      <article class="protocol-group">
+      <article id="architecture-cible" class="protocol-group">
         <p class="eyebrow">ARCHITECTURE CIBLE</p>
         <div class="diagram-host" data-mermaid-src="../diagrams/stack-europeenne-architecture.mmd"><p class="muted">Chargement du diagramme…</p></div>
       </article>
 
-      <article class="protocol-group">
+      <article id="pipeline" class="protocol-group">
         <p class="eyebrow">PIPELINE</p>
         <div class="diagram-host" data-mermaid-src="../diagrams/stack-europeenne-cicd.mmd"><p class="muted">Chargement du diagramme…</p></div>
       </article>
 
-      <article class="protocol-group">
+      <article id="choix-perimetre" class="protocol-group">
         <p class="eyebrow">CHOIX ET PÉRIMÈTRE</p>
         <h2>V1 simple mais sérieuse</h2>
         <ul>
@@ -51,7 +51,7 @@
         </ul>
       </article>
 
-      <article class="protocol-group">
+      <article id="alternatives-v1" class="protocol-group">
         <p class="eyebrow">ALTERNATIVES ÉCARTÉES POUR LA V1</p>
         <ul>
           <li><strong>Scaleway :</strong> très bon choix français et plus composable, avec Containers, PostgreSQL et Secret Manager, mais la CI/CD demande davantage de câblage et les tutoriels officiels utilisent encore des clés API GitHub.</li>
@@ -60,7 +60,7 @@
         </ul>
       </article>
 
-      <article class="protocol-group">
+      <article id="questions-ca2" class="protocol-group">
         <p class="eyebrow">QUESTIONS À TRANCHER EN CA2</p>
         <ol>
           <li>Quel framework applicatif et quel type de projet faut-il héberger ?</li>
@@ -71,7 +71,7 @@
         </ol>
       </article>
 
-      <article class="protocol-group sources">
+      <article id="sources" class="protocol-group sources">
         <p class="eyebrow">SOURCES CONSULTÉES</p>
         <ul>
           <li><a href="https://www.clever.cloud/developers/doc/ci-cd/github/" target="_blank" rel="noopener">Clever Cloud · déploiement depuis GitHub</a></li>
