@@ -1,0 +1,14 @@
+flowchart LR
+  U[Utilisateur] --> I[ZITADEL Cloud<br/>région UE]
+  I --> A[Application web/API<br/>Clever Cloud PaaS]
+  A --> D[(PostgreSQL managé<br/>Clever Cloud · France)]
+  A --> O[Stockage objet<br/>Clever Object Storage<br/>ou Scaleway · UE]
+  A --> M[Monitoring et alertes]
+  G[GitHub repository] --> C[GitHub Actions<br/>tests · scan · build]
+  C --> A
+  C --> S[Secrets manager<br/>hors dépôt]
+  S --> A
+  D --> B[Sauvegardes chiffrées<br/>et restauration testée]
+
+  classDef eu fill:#e8f3ed,stroke:#28704f,color:#173c2a
+  class I,A,D,O,S,B eu

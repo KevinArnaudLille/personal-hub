@@ -14,7 +14,11 @@ const hub = {
     { title: 'LifeDrop', summary: 'Petite simulation de vie en Godot 4 avec C#. On dépose des créatures qui se déplacent, vieillissent, se reproduisent ou se dévorent lorsqu’une créature plus grosse rencontre une plus petite.', path: 'life_drop_godot' },
     { title: 'Neon Snake Remix', summary: 'Remix néon de Snake en Python avec Tkinter, avec contrôles clavier, pause, redémarrage et téléportation du serpent d’un bord à l’autre.', path: 'snake_remix', url: 'https://github.com/KevinArnaudLille/snake-remix' }
   ],
-  cadrages: []
+  cadrages: [{
+    title: 'Stack web européenne',
+    summary: 'Cadrage d’une stack complète et sécurisée : Clever Cloud, PostgreSQL, ZITADEL et CI/CD GitHub Actions.',
+    url: 'cadrages/stack-europeenne.html'
+  }]
 };
 
 const emptyMessage = 'Rien à afficher pour le moment.';

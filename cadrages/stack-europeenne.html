@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Cadrage d'une stack web européenne, sécurisée et pilotée par GitHub Actions.">
+  <title>Stack web européenne · Cadrage</title>
+  <link rel="stylesheet" href="../style.css">
+  <link rel="icon" type="image/svg+xml" href="../assets/favicon.svg">
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="../index.html"><span class="brand-mark">✦</span> Personal Hub</a>
+    <div class="top-actions"><span class="muted">CA1 · LECTURE SEULE</span><button id="theme-toggle" class="icon-button" type="button" aria-label="Changer de thème">☼</button></div>
+  </header>
+  <main class="shell protocol-page">
+    <a class="back-link" href="../cadrages.html">← Retour aux cadrages</a>
+    <p class="eyebrow">CA1 · ARCHITECTURE ET CHOIX</p>
+    <h1>Stack web <em>européenne.</em></h1>
+    <p class="protocol-intro">Remplacer GitHub Pages par une application complète — authentification, API et base relationnelle — sans perdre GitHub comme point d'entrée ni la simplicité de déploiement.</p>
+
+    <section class="protocol-groups">
+      <article class="protocol-group">
+        <p class="eyebrow">RECOMMANDATION DE DÉPART</p>
+        <h2>Clever Cloud + ZITADEL</h2>
+        <p><strong>Clever Cloud</strong> est le meilleur compromis initial : PaaS français, déploiement depuis GitHub, PostgreSQL managé, sauvegardes, monitoring et montée en charge sans administrer Kubernetes. Choisir une région et une base en France.</p>
+        <p><strong>ZITADEL Cloud</strong>, instance en région UE, fournit l'identité OIDC/OAuth2, MFA et la gestion des sessions. Il reste découplé de l'application et peut être remplacé par Keycloak managé ou auto-hébergé si la souveraineté devient plus stricte.</p>
+        <p class="muted">Point important : GitHub Actions reste le moteur CI/CD, mais les secrets de production ne doivent pas être copiés dans le dépôt. Les permissions GitHub, les environnements protégés et un secret manager côté cloud sont obligatoires.</p>
+      </article>
+
+      <article class="protocol-group">
+        <p class="eyebrow">ARCHITECTURE CIBLE</p>
+        <div class="diagram-host" data-mermaid-src="../diagrams/stack-europeenne-architecture.mmd"><p class="muted">Chargement du diagramme…</p></div>
+      </article>
+
+      <article class="protocol-group">
+        <p class="eyebrow">PIPELINE</p>
+        <div class="diagram-host" data-mermaid-src="../diagrams/stack-europeenne-cicd.mmd"><p class="muted">Chargement du diagramme…</p></div>
+      </article>
+
+      <article class="protocol-group">
+        <p class="eyebrow">CHOIX ET PÉRIMÈTRE</p>
+        <h2>V1 simple mais sérieuse</h2>
+        <ul>
+          <li><strong>Frontend + API :</strong> une application conteneurisée ou runtime natif sur Clever Cloud, avec HTTPS et domaine personnalisé.</li>
+          <li><strong>Données :</strong> PostgreSQL managé, migrations versionnées, utilisateur applicatif à droits minimaux, sauvegardes et exercice de restauration.</li>
+          <li><strong>Identité :</strong> OIDC avec ZITADEL, aucune gestion maison des mots de passe, MFA activable, rôles applicatifs séparés des groupes d'administration.</li>
+          <li><strong>Fichiers :</strong> stockage objet européen uniquement si nécessaire, URLs signées et chiffrement côté service.</li>
+          <li><strong>CI/CD :</strong> PR obligatoire, tests, lint, audit des dépendances, secret scan, build reproductible, déploiement staging puis production avec approbation.</li>
+          <li><strong>Observabilité :</strong> logs sans données personnelles, métriques, alertes d'erreur et journal d'audit des actions sensibles.</li>
+        </ul>
+      </article>
+
+      <article class="protocol-group">
+        <p class="eyebrow">ALTERNATIVES ÉCARTÉES POUR LA V1</p>
+        <ul>
+          <li><strong>Scaleway :</strong> très bon choix français et plus composable, avec Containers, PostgreSQL et Secret Manager, mais la CI/CD demande davantage de câblage et les tutoriels officiels utilisent encore des clés API GitHub.</li>
+          <li><strong>Tout auto-héberger sur un VPS :</strong> moins cher, mais responsabilité accrue pour les patchs, sauvegardes, réseau, secrets, haute disponibilité et restauration.</li>
+          <li><strong>Supabase/Neon :</strong> ergonomie excellente, mais fournisseurs non européens ; une région UE ne suffit pas à garantir une souveraineté juridique européenne.</li>
+        </ul>
+      </article>
+
+      <article class="protocol-group">
+        <p class="eyebrow">QUESTIONS À TRANCHER EN CA2</p>
+        <ol>
+          <li>Quel framework applicatif et quel type de projet faut-il héberger ?</li>
+          <li>Quel niveau de souveraineté est requis : données en UE ou fournisseur également sous droit européen ?</li>
+          <li>Faut-il des emails transactionnels, du paiement, des uploads ou des tâches asynchrones ?</li>
+          <li>Quel budget mensuel et quel objectif de disponibilité/RTO/RPO ?</li>
+          <li>Les utilisateurs sont-ils grand public, équipe interne ou les deux ?</li>
+        </ol>
+      </article>
+
+      <article class="protocol-group sources">
+        <p class="eyebrow">SOURCES CONSULTÉES</p>
+        <ul>
+          <li><a href="https://www.clever.cloud/developers/doc/ci-cd/github/" target="_blank" rel="noopener">Clever Cloud · déploiement depuis GitHub</a></li>
+          <li><a href="https://www.clever.cloud/product/postgresql/" target="_blank" rel="noopener">Clever Cloud · PostgreSQL managé</a></li>
+          <li><a href="https://www.clever.cloud/sovereign-cloud" target="_blank" rel="noopener">Clever Cloud · souveraineté et juridiction</a></li>
+          <li><a href="https://help.zitadel.com/where-is-zitadel-cloud-data-stored" target="_blank" rel="noopener">ZITADEL · régions de données</a></li>
+          <li><a href="https://www.scaleway.com/en/docs/tutorials/using-secret-manager-with-github-action/" target="_blank" rel="noopener">Scaleway · Secret Manager avec GitHub Actions</a></li>
+        </ul>
+        <p class="muted">Ces éléments constituent un cadrage, pas une certification juridique. Les DPA, sous-traitants, régions exactes et tarifs devront être vérifiés avant la mise en production.</p>
+      </article>
+    </section>
+  </main>
+  <script src="../mermaid-loader.js" type="module"></script>
+  <script>document.getElementById('theme-toggle').addEventListener('click', () => document.body.classList.toggle('dark'));</script>
+</body>
+</html>

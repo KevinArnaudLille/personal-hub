@@ -1,0 +1,20 @@
+flowchart TD
+  PR[Pull Request] --> Q[GitHub Actions qualité]
+  Q --> T[Tests unitaires et intégration]
+  Q --> V[Lint · dépendances · secret scan]
+  Q --> P[Preview isolée]
+  T --> R{Validation requise}
+  V --> R
+  P --> R
+  R -->|merge main| B[Build immuable]
+  B --> D[Déploiement Clever Cloud]
+  D --> H[Smoke tests HTTPS et migration contrôlée]
+  H --> X{OK ?}
+  X -->|oui| L[Version publiée]
+  X -->|non| K[Blocage ou rollback]
+  L --> N[Notification et métriques]
+
+  classDef gate fill:#fff3d8,stroke:#a66a00,color:#563900
+  classDef good fill:#e8f3ed,stroke:#28704f,color:#173c2a
+  class R,X gate
+  class L,N good

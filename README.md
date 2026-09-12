@@ -21,6 +21,8 @@ Aucune donnée n'est saisie sur la page et aucun formulaire n'est présent. Pour
 
 Les cadrages sont des pages dédiées aux futurs projets. Chaque page conserve le contexte, les décisions, les questions ouvertes et des diagrammes Mermaid explicatifs dans `diagrams/*.mmd`. `protocole CA1` commence un cadrage ; `protocole CA2` poursuit un cadrage existant. Le résumé très court des cadrages actifs est affiché sur l'accueil.
 
+Le cadrage actif **Stack web européenne** propose une première architecture Clever Cloud + PostgreSQL + ZITADEL, avec GitHub Actions comme chaîne CI/CD et une comparaison avec Scaleway et l'auto-hébergement. Il reste à préciser le framework, le budget, les besoins fonctionnels et le niveau de souveraineté avant CA2.
+
 ## Développement local
 
 ```bash
