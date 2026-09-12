@@ -1,0 +1,176 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Tutoriel interactif des stratégies de gestion d'un message reçu pendant le traitement d'une autre question.">
+  <title>Message pendant le traitement · Personal Hub</title>
+  <link rel="stylesheet" href="../style.css">
+  <link rel="icon" type="image/svg+xml" href="../assets/favicon.svg">
+  <style>
+    .demo-page { max-width: 1060px; padding-top: 32px; }
+    .back-link { color: var(--olive); display: inline-block; font-size: 13px; margin-bottom: 32px; text-decoration: none; }
+    .back-link:hover { text-decoration: underline; }
+    .hero-note { background: color-mix(in srgb, var(--accent) 9%, transparent); border: 1px solid color-mix(in srgb, var(--accent) 30%, var(--line)); border-radius: 12px; color: var(--muted); font-size: 14px; line-height: 1.6; margin-top: 20px; padding: 15px 16px; }
+    .simulator { background: var(--surface); border: 1px solid var(--line); border-radius: 18px; box-shadow: var(--shadow); margin-top: 28px; overflow: hidden; }
+    .sim-head { align-items: center; border-bottom: 1px solid var(--line); display: flex; gap: 12px; justify-content: space-between; padding: 17px 18px; }
+    .sim-head h2 { font-size: 19px; margin: 0; }
+    .status { align-items: center; color: var(--muted); display: flex; font-size: 12px; gap: 7px; white-space: nowrap; }
+    .status::before { background: var(--olive); border-radius: 50%; content: ''; display: inline-block; height: 8px; width: 8px; }
+    .status.busy::before { animation: pulse 1s infinite; background: var(--accent); }
+    @keyframes pulse { 50% { opacity: .35; transform: scale(.7); } }
+    .sim-body { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(260px, .75fr); }
+    .conversation { min-height: 390px; padding: 18px; }
+    .bubble { border: 1px solid var(--line); border-radius: 13px; font-size: 13px; line-height: 1.5; margin-bottom: 12px; max-width: 88%; padding: 11px 13px; }
+    .bubble.user { background: color-mix(in srgb, var(--accent) 10%, transparent); margin-left: auto; }
+    .bubble.assistant { background: var(--bg); }
+    .bubble.system { background: color-mix(in srgb, var(--olive) 9%, transparent); border-style: dashed; color: var(--muted); font-size: 12px; max-width: 100%; }
+    .bubble small { color: var(--muted); display: block; font-size: 10px; margin-bottom: 3px; text-transform: uppercase; }
+    .bubble code { color: var(--olive); font-size: 11px; }
+    .sim-side { background: color-mix(in srgb, var(--bg) 72%, var(--surface)); border-left: 1px solid var(--line); padding: 18px; }
+    .sim-side h3 { font-size: 14px; margin: 0 0 10px; }
+    .progress { display: grid; gap: 7px; margin-bottom: 18px; }
+    .progress-step { align-items: center; color: var(--muted); display: flex; font-size: 11px; gap: 8px; }
+    .progress-step::before { border: 1px solid var(--line); border-radius: 50%; content: ''; height: 7px; width: 7px; }
+    .progress-step.active { color: var(--accent-dark); font-weight: 700; }
+    .progress-step.active::before { background: var(--accent); border-color: var(--accent); }
+    .progress-step.done::before { background: var(--olive); border-color: var(--olive); }
+    .control-panel { border-top: 1px solid var(--line); padding: 16px 18px 18px; }
+    .strategy-row { display: flex; flex-wrap: wrap; gap: 7px; margin-bottom: 12px; }
+    .strategy-button { background: var(--bg); border: 1px solid var(--line); border-radius: 999px; color: var(--ink); font-size: 11px; padding: 8px 11px; }
+    .strategy-button:hover,.strategy-button.selected { border-color: var(--accent); color: var(--accent-dark); }
+    .composer { display: flex; gap: 8px; }
+    .sr-only { clip: rect(0 0 0 0); clip-path: inset(50%); height: 1px; overflow: hidden; position: absolute; white-space: nowrap; width: 1px; }
+    .composer input { background: var(--surface); border: 1px solid var(--line); border-radius: 9px; color: var(--ink); flex: 1; font: inherit; font-size: 13px; min-width: 0; padding: 11px 12px; }
+    .composer input:focus { border-color: var(--accent); outline: 2px solid color-mix(in srgb, var(--accent) 22%, transparent); }
+    .send-button { background: var(--accent); border: 0; border-radius: 9px; color: #fff; font-size: 12px; font-weight: 750; padding: 0 15px; }
+    .send-button:hover { background: var(--accent-dark); }
+    .hint { color: var(--muted); font-size: 11px; line-height: 1.45; margin: 9px 0 0; }
+    .strategy-grid { display: grid; gap: 14px; grid-template-columns: repeat(2, minmax(0, 1fr)); margin-top: 24px; }
+    .strategy-card { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 16px; }
+    .strategy-card h3 { font-size: 16px; margin: 0 0 7px; }
+    .strategy-card p { color: var(--muted); font-size: 12px; line-height: 1.55; margin: 0 0 9px; }
+    .strategy-card strong { color: var(--ink); }
+    .tag { background: color-mix(in srgb, var(--olive) 13%, transparent); border-radius: 5px; color: var(--olive); display: inline-block; font-size: 10px; font-weight: 750; margin-bottom: 9px; padding: 4px 6px; }
+    .flow { border-left: 2px solid var(--line); color: var(--muted); font-size: 11px; line-height: 1.6; margin: 9px 0 0; padding-left: 11px; }
+    .tip-card { border-left: 3px solid var(--accent); margin-top: 24px; padding: 2px 0 2px 14px; }
+    .tip-card h2 { font-size: 18px; margin: 0 0 7px; }
+    .tip-card p { color: var(--muted); font-size: 13px; line-height: 1.6; margin: 0; }
+    @media (max-width: 720px) { .sim-body { grid-template-columns: 1fr; } .sim-side { border-left: 0; border-top: 1px solid var(--line); } .strategy-grid { grid-template-columns: 1fr; } .sim-head { align-items: flex-start; flex-direction: column; } }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="../index.html"><span class="brand-mark">✦</span> Personal Hub</a>
+    <div class="top-actions"><span class="muted">TUTORIEL INTERACTIF</span><button id="theme-toggle" class="icon-button" type="button" aria-label="Changer de thème">☼</button></div>
+  </header>
+  <main class="shell demo-page">
+    <a class="back-link" href="../index.html">← Retour au Personal Hub</a>
+    <p class="eyebrow">DÉMO · MESSAGES PENDANT UN TOUR</p>
+    <h1>Que faire quand le modèle <em>travaille déjà ?</em></h1>
+    <p class="intro-copy">Un agent conversationnel est en train de traiter une question. Tu envoies un nouveau message : doit-il attendre, interrompre, modifier le travail en cours ou l'arrêter ?</p>
+    <div class="hero-note"><strong>Mode d'emploi :</strong> choisis une stratégie, écris un message dans la boîte, puis observe la simulation. La page fonctionne entièrement dans ton navigateur : aucun backend, aucune base de données et aucun message n'est envoyé.</div>
+
+    <section class="simulator" aria-labelledby="sim-title">
+      <div class="sim-head"><h2 id="sim-title">Simulateur de conversation</h2><div id="status" class="status busy">Le modèle travaille</div></div>
+      <div class="sim-body">
+        <div id="conversation" class="conversation" aria-live="polite"></div>
+        <aside class="sim-side" aria-label="Progression simulée">
+          <h3>Ce que fait le modèle</h3>
+          <div id="progress" class="progress"></div>
+          <p id="explanation" class="hint"></p>
+        </aside>
+      </div>
+      <div class="control-panel">
+        <div class="eyebrow">1 · CHOISIS UNE STRATÉGIE</div>
+        <div class="strategy-row" role="group" aria-label="Stratégie de traitement du message">
+          <button class="strategy-button selected" data-strategy="interrupt" type="button">Interruption</button>
+          <button class="strategy-button" data-strategy="queue" type="button">Queue</button>
+          <button class="strategy-button" data-strategy="steer" type="button">Steering</button>
+          <button class="strategy-button" data-strategy="stop" type="button">Arrêt</button>
+          <button class="strategy-button" data-strategy="approval" type="button">Approbation</button>
+        </div>
+        <div class="eyebrow">2 · ENVOIE UN NOUVEAU MESSAGE</div>
+        <form id="composer" class="composer">
+          <label class="sr-only" for="message">Ton nouveau message</label>
+          <input id="message" autocomplete="off" value="Finalement, compare aussi avec une autre solution." placeholder="Ex. Ajoute un exemple concret…">
+          <button class="send-button" type="submit">Envoyer</button>
+        </form>
+        <p class="hint">Astuce : envoie plusieurs messages avec <strong>Queue</strong> pour observer l'ordre FIFO. Recharge la page pour recommencer.</p>
+      </div>
+    </section>
+
+    <section class="strategy-grid" aria-label="Explication des stratégies">
+      <article class="strategy-card"><span class="tag">CHANGER LA DIRECTION</span><h3>Interruption</h3><p>Le nouveau message redirige le tour actuel. Le modèle arrête sa génération dès qu'il atteint un point sûr, conserve ce qu'il a déjà fait, puis reprend avec ton message comme correction.</p><p><strong>À utiliser quand :</strong> tu viens de repérer une erreur ou tu veux changer rapidement la priorité.</p><p class="flow">Message → interruption contrôlée → contexte déjà produit conservé → nouvelle génération.</p></article>
+      <article class="strategy-card"><span class="tag">RESPECTER L'ORDRE</span><h3>Queue</h3><p>Le message est placé dans une file d'attente. Le modèle termine complètement le tour actuel, puis commence un nouveau tour avec le message en attente.</p><p><strong>À utiliser quand :</strong> la demande actuelle doit aller jusqu'au bout et la suivante est indépendante.</p><p class="flow">Message → file FIFO → tour actuel terminé → nouveau tour.</p></article>
+      <article class="strategy-card"><span class="tag">AJUSTER SANS REPARTIR</span><h3>Steering</h3><p>Le message est injecté dans le tour en cours, sans créer un nouveau tour et sans interrompre le modèle. Dans Hermes, il arrive à la prochaine frontière de résultat d'outil.</p><p><strong>À utiliser quand :</strong> tu veux préciser la direction sans perdre le travail déjà engagé.</p><p class="flow">Message → injection → prochain résultat d'outil → même tour continue.</p></article>
+      <article class="strategy-card"><span class="tag">ABANDONNER</span><h3>Arrêt</h3><p>L'arrêt est différent d'une simple interruption : il demande de ne pas poursuivre le tour. C'est le bouton à choisir pour annuler une opération devenue inutile ou bloquée.</p><p><strong>À utiliser quand :</strong> tu ne veux ni résultat actuel ni nouveau tour automatique.</p><p class="flow">Commande d'arrêt → annulation/arrêt du travail → session redevient disponible.</p></article>
+      <article class="strategy-card"><span class="tag">CAS PARTICULIER</span><h3>Approbation</h3><p>Un message comme « oui » ou « non » n'est pas toujours une nouvelle question. Si le modèle attend l'autorisation d'exécuter une commande sensible, la réponse est routée directement vers le mécanisme d'approbation.</p><p><strong>À retenir :</strong> le système doit examiner le contexte avant d'appliquer queue, interruption ou steering.</p><p class="flow">Demande d'autorisation en attente → oui/non → approbation ou refus → tour reprend.</p></article>
+    </section>
+
+    <section class="tip-card"><h2>Comment choisir ?</h2><p><strong>Corriger maintenant :</strong> interruption. <strong>Attendre sans mélanger :</strong> queue. <strong>Préciser la trajectoire :</strong> steering. <strong>Tout abandonner :</strong> arrêt. <strong>Répondre à une question de sécurité :</strong> approbation. En pratique, un vrai gateway doit aussi gérer les images, les outils déjà en cours et les messages de contrôle comme <code>/stop</code> séparément.</p></section>
+  </main>
+  <script>
+    const state = { strategy: 'interrupt', phase: 0, busy: true, queue: [], timer: null };
+    const labels = ['Analyse de la question', 'Appel d’un outil', 'Lecture du résultat', 'Rédaction de la réponse'];
+    const conversation = document.getElementById('conversation');
+    const progress = document.getElementById('progress');
+    const status = document.getElementById('status');
+    const explanation = document.getElementById('explanation');
+    const strategyText = {
+      interrupt: 'Le prochain message sera appliqué dès qu’un point sûr est atteint. Le travail déjà terminé reste visible.',
+      queue: 'Le prochain message attendra dans une file FIFO et démarrera après la réponse actuelle.',
+      steer: 'Le prochain message sera injecté après le prochain résultat d’outil, sans démarrer un nouveau tour.',
+      stop: 'Le message arrêtera le tour simulé ; il ne sera pas lancé automatiquement.',
+      approval: 'Le message sera interprété comme une réponse à une autorisation en attente.'
+    };
+    function addBubble(kind, label, text) {
+      const bubble = document.createElement('div'); bubble.className = `bubble ${kind}`;
+      bubble.innerHTML = `<small>${label}</small>${escapeHtml(text)}`; conversation.appendChild(bubble); conversation.scrollTop = conversation.scrollHeight;
+    }
+    function escapeHtml(text) { const node = document.createElement('div'); node.textContent = text; return node.innerHTML; }
+    function renderProgress() {
+      progress.innerHTML = labels.map((label, i) => `<div class="progress-step ${i < state.phase ? 'done' : ''} ${i === state.phase && state.busy ? 'active' : ''}">${label}</div>`).join('');
+      status.textContent = state.busy ? 'Le modèle travaille' : 'Le modèle est disponible'; status.classList.toggle('busy', state.busy);
+      explanation.textContent = strategyText[state.strategy];
+    }
+    function advance() {
+      if (!state.busy) return;
+      state.phase += 1;
+      if (state.phase >= labels.length) {
+        state.busy = false; state.phase = labels.length;
+        addBubble('assistant', 'Modèle · réponse terminée', 'Voici une réponse simulée. Le tour est terminé : un message éventuellement en queue peut maintenant démarrer.');
+        renderProgress();
+        if (state.queue.length) { const next = state.queue.shift(); setTimeout(() => startTurn(next, 'Tour suivant depuis la file'), 500); }
+        return;
+      }
+      renderProgress(); state.timer = setTimeout(advance, 1500);
+    }
+    function startTurn(text, label = 'Nouveau tour') {
+      state.busy = true; state.phase = 0; addBubble('user', 'Utilisateur', text); addBubble('system', label, 'Le modèle commence un nouveau tour.'); renderProgress(); clearTimeout(state.timer); state.timer = setTimeout(advance, 1200);
+    }
+    function handleMessage(text) {
+      if (!text.trim()) return;
+      const mode = state.strategy;
+      if (!state.busy) { startTurn(text, 'Après le tour précédent'); return; }
+      if (mode === 'queue') {
+        state.queue.push(text); addBubble('user', 'Utilisateur · en attente', text); addBubble('system', 'Queue', `Message placé en position ${state.queue.length}. Il attend la fin du tour actuel.`); return;
+      }
+      if (mode === 'steer') {
+        addBubble('user', 'Utilisateur · steering', text); addBubble('system', 'Steering', 'Correction injectée : le même tour continue après sa prochaine étape d’outil.'); state.phase = Math.min(state.phase + 1, labels.length - 1); renderProgress(); return;
+      }
+      if (mode === 'stop') {
+        clearTimeout(state.timer); state.busy = false; state.phase = labels.length; addBubble('user', 'Utilisateur · arrêt', text); addBubble('system', 'Arrêt', 'Le tour est abandonné. Le message n’est pas lancé automatiquement : tu peux renvoyer une nouvelle demande.'); renderProgress(); return;
+      }
+      if (mode === 'approval') {
+        addBubble('user', 'Utilisateur · approbation', text); addBubble('system', 'Approbation', 'Réponse routée vers le contrôle de sécurité : dans un vrai système, « oui » autorise et « non » refuse la commande en attente.'); return;
+      }
+      clearTimeout(state.timer); state.busy = false; addBubble('user', 'Utilisateur · interruption', text); addBubble('system', 'Interruption contrôlée', 'Le modèle conserve le travail déjà terminé et redémarre sa génération avec cette correction.'); renderProgress(); setTimeout(() => startTurn('Reprise avec la correction : ' + text, 'Tour redirigé'), 800);
+    }
+    document.querySelectorAll('[data-strategy]').forEach(button => button.addEventListener('click', () => { state.strategy = button.dataset.strategy; document.querySelectorAll('[data-strategy]').forEach(b => b.classList.toggle('selected', b === button)); renderProgress(); }));
+    document.getElementById('composer').addEventListener('submit', event => { event.preventDefault(); const input = document.getElementById('message'); handleMessage(input.value); input.select(); });
+    document.getElementById('theme-toggle').addEventListener('click', () => document.body.classList.toggle('dark'));
+    addBubble('user', 'Utilisateur', 'Explique-moi comment fonctionne la gestion des messages concurrents.'); addBubble('system', 'Simulation', 'Le modèle a commencé son traitement. Envoie maintenant un message avec la stratégie choisie.'); renderProgress(); state.timer = setTimeout(advance, 1500);
+  </script>
+</body>
+</html>
