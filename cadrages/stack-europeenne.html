@@ -11,21 +11,32 @@
 <body>
   <header class="topbar">
     <a class="brand" href="../index.html"><span class="brand-mark">✦</span> Personal Hub</a>
-    <div class="top-actions"><span class="muted">CA1 · LECTURE SEULE</span><button id="theme-toggle" class="icon-button" type="button" aria-label="Changer de thème">☼</button></div>
+    <div class="top-actions"><span class="muted">CA2 · LECTURE SEULE</span><button id="theme-toggle" class="icon-button" type="button" aria-label="Changer de thème">☼</button></div>
   </header>
   <main class="shell protocol-page">
     <a class="back-link" href="../cadrages.html">← Retour aux cadrages</a>
-    <p class="eyebrow">CA1 · ARCHITECTURE ET CHOIX</p>
+    <p class="eyebrow">CA2 · ARCHITECTURE, COÛTS ET PÉRIMÈTRE</p>
     <h1>Stack web <em>européenne.</em> <code class="cadrage-id cadrage-id-title">cadrage-stack-europeenne</code></h1>
-    <p class="protocol-intro">Remplacer GitHub Pages par une application complète — authentification, API et base relationnelle — sans perdre GitHub comme point d'entrée ni la simplicité de déploiement.</p>
+    <p class="protocol-intro">Une stack managée européenne pour rester concentré sur le produit : frontend Vue/Nuxt, backend Java Spring Boot, service IA Python, PostgreSQL et identité OIDC.</p>
 
     <section id="cadrage-stack-europeenne" class="protocol-groups">
-      <article id="recommandation-depart" class="protocol-group">
-        <p class="eyebrow">RECOMMANDATION DE DÉPART</p>
-        <h2>Clever Cloud + ZITADEL</h2>
-        <p><strong>Clever Cloud</strong> est le meilleur compromis initial : PaaS français, déploiement depuis GitHub, PostgreSQL managé, sauvegardes, monitoring et montée en charge sans administrer Kubernetes. Choisir une région et une base en France.</p>
-        <p><strong>ZITADEL Cloud</strong>, instance en région UE, fournit l'identité OIDC/OAuth2, MFA et la gestion des sessions. Il reste découplé de l'application et peut être remplacé par Keycloak managé ou auto-hébergé si la souveraineté devient plus stricte.</p>
-        <p class="muted">Point important : GitHub Actions reste le moteur CI/CD, mais les secrets de production ne doivent pas être copiés dans le dépôt. Les permissions GitHub, les environnements protégés et un secret manager côté cloud sont obligatoires.</p>
+      <article id="recommandation" class="protocol-group">
+        <p class="eyebrow">RECOMMANDATION</p>
+        <h2>Option 1 · Clever Cloud + ZITADEL · ~18,80 €/mois</h2>
+        <p><strong>Choix recommandé pour la V1.</strong> Clever Cloud fournit le runtime managé, PostgreSQL, les sauvegardes quotidiennes, les métriques et les logs. ZITADEL fournit l'identité OIDC/OAuth2 et le MFA sans gestion maison des mots de passe. Les deux services peuvent être configurés en région européenne ; le DPA, les sous-traitants et la région exacte restent à valider contractuellement.</p>
+        <p>Le frontend Nuxt peut être compilé puis servi par l'application Java afin de ne pas ajouter un troisième runtime. Le service Python IA reste séparé, avec une instance nano au départ. Les tâches planifiées côté serveur sont possibles via un scheduler applicatif ou un job dédié ; elles ne nécessitent pas forcément une architecture asynchrone avec file de messages.</p>
+        <p class="muted">Cette estimation est un ordre de grandeur hors TVA, domaine et éventuels appels à un fournisseur de modèles IA : 2 runtimes nano à 6 €/mois + PostgreSQL XXS à environ 6,80 €/mois + ZITADEL Free à 0 €. Le nano peut être trop juste pour Java et Python simultanément ; passer à l'option 2 si les tests de charge ou la mémoire le montrent.</p>
+      </article>
+
+      <article id="couts" class="protocol-group">
+        <p class="eyebrow">COMPARATIF DES COÛTS</p>
+        <ul>
+          <li><strong>Option 1 · Lean managée — ~18,80 €/mois :</strong> Clever Cloud, 1 runtime Java/Nuxt nano (6 €), 1 runtime Python nano (6 €), PostgreSQL XXS (≈6,80 €), ZITADEL Free, stockage de fichiers non inclus par défaut. Marge d'environ 1,20 € sur le budget de 20 €.</li>
+          <li><strong>Option 2 · Confort managé — ~38,80 €/mois :</strong> même architecture, mais deux runtimes XS à 16 € chacun et PostgreSQL à ≈6,80 €. Plus réaliste pour Spring Boot + Python disponibles 24/7, sans changer le modèle d'exploitation.</li>
+          <li><strong>Option 3 · Scaleway composable — ~17,94 €/mois avant stockage et trafic :</strong> une instance DEV1-S à 0,00898 €/h (≈6,55 €/mois) pour les services conteneurisés, PostgreSQL DB-DEV-S à 0,0156 €/h (≈11,39 €/mois), Secret Manager et stockage objet facturés à l'usage. Les données restent en régions européennes. Ce choix respecte le budget mais demande davantage de configuration réseau, déploiement, supervision et durcissement de la VM.</li>
+          <li><strong>Option 4 · OVHcloud managé — hors budget :</strong> PostgreSQL Discovery est managé, mais le tarif public affiché commence autour de 0,23 €/h par nœud, soit environ 169 €/mois avant le runtime applicatif. À réserver à un besoin de service managé plus robuste, pas à cette V1.</li>
+        </ul>
+        <p class="muted">Calculs mensuels sur 730 heures. Les prix fournisseurs évoluent, sont hors TVA et peuvent dépendre de la région, du stockage, du trafic et du taux de change. Aucun coût de modèle IA n'est inclus : il dépend du modèle, des tokens et du fournisseur choisi.</p>
       </article>
 
       <article id="architecture-cible" class="protocol-group">
@@ -38,49 +49,53 @@
         <div class="diagram-host" data-mermaid-src="../diagrams/stack-europeenne-cicd.mmd"><p class="muted">Chargement du diagramme…</p></div>
       </article>
 
-      <article id="choix-perimetre" class="protocol-group">
-        <p class="eyebrow">CHOIX ET PÉRIMÈTRE</p>
-        <h2>V1 simple mais sérieuse</h2>
+      <article id="securite" class="protocol-group">
+        <p class="eyebrow">SÉCURITÉ PRISE EN CHARGE ET RESPONSABILITÉS</p>
         <ul>
-          <li><strong>Frontend + API :</strong> une application conteneurisée ou runtime natif sur Clever Cloud, avec HTTPS et domaine personnalisé.</li>
-          <li><strong>Données :</strong> PostgreSQL managé, migrations versionnées, utilisateur applicatif à droits minimaux, sauvegardes et exercice de restauration.</li>
-          <li><strong>Identité :</strong> OIDC avec ZITADEL, aucune gestion maison des mots de passe, MFA activable, rôles applicatifs séparés des groupes d'administration.</li>
-          <li><strong>Fichiers :</strong> stockage objet européen uniquement si nécessaire, URLs signées et chiffrement côté service.</li>
-          <li><strong>CI/CD :</strong> PR obligatoire, tests, lint, audit des dépendances, secret scan, build reproductible, déploiement staging puis production avec approbation.</li>
-          <li><strong>Observabilité :</strong> logs sans données personnelles, métriques, alertes d'erreur et journal d'audit des actions sensibles.</li>
+          <li><strong>Provider :</strong> HTTPS, isolation du runtime, patching de la plateforme, PostgreSQL managé, sauvegardes, métriques et logs.</li>
+          <li><strong>Identité :</strong> ZITADEL en OIDC, MFA activé, rôles applicatifs séparés des administrateurs, aucune base de mots de passe dans l'application.</li>
+          <li><strong>Projet :</strong> PR obligatoires, Dependabot, SAST léger, secret scan, images ou artefacts immuables, environnements staging/production protégés et approbation avant production.</li>
+          <li><strong>Données :</strong> région UE explicitement choisie, chiffrement en transit et au repos, utilisateur PostgreSQL à privilèges minimaux, migrations versionnées et test de restauration.</li>
+          <li><strong>Fichiers :</strong> stockage objet européen uniquement si nécessaire, URLs signées, quotas, contrôle du type et de la taille, antivirus si des fichiers non fiables sont acceptés.</li>
+          <li><strong>À notre charge :</strong> vulnérabilités du code, dépendances, autorisations métier, journal d'audit, sauvegarde des secrets, revue du DPA et exercice de restauration.</li>
         </ul>
       </article>
 
-      <article id="alternatives-v1" class="protocol-group">
-        <p class="eyebrow">ALTERNATIVES ÉCARTÉES POUR LA V1</p>
+      <article id="decisions" class="protocol-group">
+        <p class="eyebrow">DÉCISIONS ET HYPOTHÈSES</p>
         <ul>
-          <li><strong>Scaleway :</strong> très bon choix français et plus composable, avec Containers, PostgreSQL et Secret Manager, mais la CI/CD demande davantage de câblage et les tutoriels officiels utilisent encore des clés API GitHub.</li>
-          <li><strong>Tout auto-héberger sur un VPS :</strong> moins cher, mais responsabilité accrue pour les patchs, sauvegardes, réseau, secrets, haute disponibilité et restauration.</li>
-          <li><strong>Supabase/Neon :</strong> ergonomie excellente, mais fournisseurs non européens ; une région UE ne suffit pas à garantir une souveraineté juridique européenne.</li>
+          <li>Maximum d'environ dix utilisateurs, principalement un seul ; pas d'email transactionnel ni de paiement.</li>
+          <li>Disponibilité 24/7, mais pas d'exigence forte de RTO/RPO : sauvegardes quotidiennes et restauration testée suffisent pour la V1.</li>
+          <li>Le besoin de fichiers reste optionnel. Les tâches planifiées sont probables ; les traitements longs pourront évoluer vers une file de messages plus tard.</li>
+          <li>Le fournisseur et les données doivent être européens. « Région UE » et « fournisseur sous droit européen » sont deux critères à vérifier séparément.</li>
+          <li>Le budget cible est de 20 €/mois ; il est compatible avec l'option 1 seulement avec des ressources minimales et sans coût de modèle IA.</li>
         </ul>
       </article>
 
-      <article id="questions-ca2" class="protocol-group">
-        <p class="eyebrow">QUESTIONS À TRANCHER EN CA2</p>
+      <article id="questions-suivantes" class="protocol-group">
+        <p class="eyebrow">PROCHAINES QUESTIONS</p>
         <ol>
-          <li>Quel framework applicatif et quel type de projet faut-il héberger ?</li>
-          <li>Quel niveau de souveraineté est requis : données en UE ou fournisseur également sous droit européen ?</li>
-          <li>Faut-il des emails transactionnels, du paiement, des uploads ou des tâches asynchrones ?</li>
-          <li>Quel budget mensuel et quel objectif de disponibilité/RTO/RPO ?</li>
-          <li>Les utilisateurs sont-ils grand public, équipe interne ou les deux ?</li>
+          <li>Le service IA appelle-t-il une API externe ou doit-il exécuter un modèle local ? Ce choix domine le coût et la mémoire.</li>
+          <li>Le dépôt sera-t-il public ou privé ? GitHub Free inclut les Actions dans les dépôts publics ; les minutes privées ont un quota mensuel.</li>
+          <li>Quelle quantité et quelle sensibilité de fichiers faut-il stocker ?</li>
+          <li>Faut-il une séparation staging/production permanente, ou un environnement de démonstration suffit-il ?</li>
+          <li>Le budget de 20 € est-il strict hors TVA, ou peut-il monter à environ 40 € pour éviter les limites mémoire ?</li>
         </ol>
       </article>
 
       <article id="sources" class="protocol-group sources">
-        <p class="eyebrow">SOURCES CONSULTÉES</p>
+        <p class="eyebrow">SOURCES ET HYPOTHÈSES TARIFAIRES</p>
         <ul>
-          <li><a href="https://www.clever.cloud/developers/doc/ci-cd/github/" target="_blank" rel="noopener">Clever Cloud · déploiement depuis GitHub</a></li>
-          <li><a href="https://www.clever.cloud/product/postgresql/" target="_blank" rel="noopener">Clever Cloud · PostgreSQL managé</a></li>
-          <li><a href="https://www.clever.cloud/sovereign-cloud" target="_blank" rel="noopener">Clever Cloud · souveraineté et juridiction</a></li>
-          <li><a href="https://help.zitadel.com/where-is-zitadel-cloud-data-stored" target="_blank" rel="noopener">ZITADEL · régions de données</a></li>
-          <li><a href="https://www.scaleway.com/en/docs/tutorials/using-secret-manager-with-github-action/" target="_blank" rel="noopener">Scaleway · Secret Manager avec GitHub Actions</a></li>
+          <li><a href="https://www.clever.cloud/pricing/" target="_blank" rel="noopener">Clever Cloud · tarifs</a> — nano 6 €/mois, XS 16 €/mois, facturation à la seconde.</li>
+          <li><a href="https://www.clever.cloud/product/postgresql" target="_blank" rel="noopener">Clever Cloud · PostgreSQL managé</a> — sauvegardes quotidiennes, restauration et hébergement France/UE annoncés par le fournisseur.</li>
+          <li><a href="https://zitadel.com/pricing" target="_blank" rel="noopener">ZITADEL · tarifs</a> — plan Free et résidence de données UE annoncée.</li>
+          <li><a href="https://www.scaleway.com/en/pricing/virtual-instances/" target="_blank" rel="noopener">Scaleway · instances virtuelles</a> — DEV1-S à 0,00898 €/h.</li>
+          <li><a href="https://www.scaleway.com/en/pricing/managed-databases/" target="_blank" rel="noopener">Scaleway · bases managées</a> — DB-DEV-S à 0,0156 €/h, stockage et sauvegardes en supplément.</li>
+          <li><a href="https://www.scaleway.com/en/pricing/security-and-account/" target="_blank" rel="noopener">Scaleway · Secret Manager</a> — versions et appels facturés à l'usage.</li>
+          <li><a href="https://www.ovhcloud.com/en/public-cloud/prices/" target="_blank" rel="noopener">OVHcloud · tarifs Public Cloud</a> — PostgreSQL Discovery et Production.</li>
+          <li><a href="https://github.com/pricing" target="_blank" rel="noopener">GitHub · tarifs</a> — dépôts et minutes GitHub Actions.</li>
         </ul>
-        <p class="muted">Ces éléments constituent un cadrage, pas une certification juridique. Les DPA, sous-traitants, régions exactes et tarifs devront être vérifiés avant la mise en production.</p>
+        <p class="muted">Ce cadrage n'est pas une certification juridique ni un devis. Avant production : confirmer régions, DPA, sous-traitants, rétention des sauvegardes, clauses de transfert, SLA et coût d'appel au modèle IA.</p>
       </article>
     </section>
   </main>

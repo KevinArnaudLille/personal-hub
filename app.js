@@ -17,7 +17,7 @@ const hub = {
   cadrages: [{
     id: 'cadrage-stack-europeenne',
     title: 'Stack web européenne',
-    summary: 'Cadrage d’une stack complète et sécurisée : Clever Cloud, PostgreSQL, ZITADEL et CI/CD GitHub Actions.',
+    summary: 'CA2 : stack Vue/Nuxt, Spring Boot, Python IA, PostgreSQL et OIDC ; option recommandée autour de 18,80 €/mois.',
     url: 'cadrages/stack-europeenne.html'
   }]
 };
