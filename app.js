@@ -19,6 +19,11 @@ const hub = {
     title: 'Stack web européenne',
     summary: 'CA2 : stack Vue/Nuxt, Spring Boot, Python IA, PostgreSQL et OIDC ; option recommandée autour de 18,80 €/mois.',
     url: 'cadrages/stack-europeenne.html'
+  }, {
+    id: 'cadrage-ailfred-foundations',
+    title: 'Ailfred · fondations',
+    summary: 'CA1 : assistant personnel privé, landing OIDC, DDD et architecture hexagonale.',
+    url: 'cadrages/ailfred-foundations.html'
   }]
 };
 

@@ -1,0 +1,10 @@
+flowchart LR
+  D[Atelier de domaine\nlangage ubiquitaire + invariants] --> B[Branche courte]
+  B --> Q[PR\ntests · lint · scans · Compose]
+  Q --> R{Revue Kevin\nidentité/droits : renforcée}
+  R --> M[main protégée]
+  M --> T[Artefact Docker immuable]
+  T --> P[Production Clever Cloud]
+  P --> O[Logs · métriques\nrestauration documentée]
+  X[Secrets provider\njamais Git] -. injection .-> P
+  K[Kevin seul\ncompte · accès · merge · release] -. autorise .-> R

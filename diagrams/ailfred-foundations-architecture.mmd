@@ -1,0 +1,12 @@
+flowchart LR
+  U[Kevin ou personne de confiance] --> W[Ailfred Web\nNuxt statique]
+  W --> S[Spring Boot\nAdaptateur HTTP + session OIDC]
+  S --> I[ZITADEL\nOIDC · MFA · rôles]
+  S --> D[(PostgreSQL managé\nClever Cloud)]
+  H[Machine Hermes\nDocker Compose] -. contrat local .-> S
+  G[GitHub compte Hermes\nsource + CI] --> C[Clever Cloud\nDockerfile par application]
+  C --> S
+  DC[Domain core\nframework-free] --- P[Ports applicatifs]
+  P --- A[Adaptateurs\nHTTP · OIDC · SQL]
+  AI[IA Python + provider LLM]:::deferred
+  classDef deferred stroke-dasharray: 5 5,fill:#eee,color:#666
