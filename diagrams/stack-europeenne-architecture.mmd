@@ -3,9 +3,11 @@ flowchart LR
     U --> FE[Nuxt/Vue compilé\nservi par Java]
     FE --> API[Java Spring Boot\nClever Cloud]
     API --> DB[(PostgreSQL managé\nbackups quotidiennes)]
-    API --> AI[Service IA Python\nClever Cloud]
+    API --> AI[Service IA Python\nadaptateur provider]
+    AI -. API externe .-> LLM[Provider LLM\ncoût séparé]
     API -. optionnel .-> OBJ[(Cellar / objet UE\nURLs signées)]
     API -. planifié .-> JOB[Tâches planifiées\nworker ou scheduler]
     JOB --> DB
     API --> OBS[Logs · métriques\nalertes]
-    SEC[GitHub Actions\nPR · tests · scans · secrets] --> API
+    SEC[GitHub Actions\nPR · tests · scans] --> API
+    LOCAL[Repo GitHub\nsource de vérité · local Hermes] -. même contrat .-> API

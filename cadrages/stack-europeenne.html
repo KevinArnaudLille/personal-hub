@@ -17,26 +17,26 @@
     <a class="back-link" href="../cadrages.html">← Retour aux cadrages</a>
     <p class="eyebrow">CA2 · ARCHITECTURE, COÛTS ET PÉRIMÈTRE</p>
     <h1>Stack web <em>européenne.</em> <code class="cadrage-id cadrage-id-title">cadrage-stack-europeenne</code></h1>
-    <p class="protocol-intro">Une stack managée européenne pour rester concentré sur le produit : frontend Vue/Nuxt, backend Java Spring Boot, service IA Python, PostgreSQL et identité OIDC.</p>
+    <p class="protocol-intro">Une stack européenne, pilotée par GitHub et exécutable localement sur la machine Hermes : frontend Vue/Nuxt, backend Java Spring Boot, service IA Python avec adaptateurs de providers, PostgreSQL et identité OIDC.</p>
 
     <section id="cadrage-stack-europeenne" class="protocol-groups">
       <article id="recommandation" class="protocol-group">
         <p class="eyebrow">RECOMMANDATION</p>
         <h2>Option 1 · Clever Cloud + ZITADEL · ~18,80 €/mois</h2>
-        <p><strong>Choix recommandé pour la V1.</strong> Clever Cloud fournit le runtime managé, PostgreSQL, les sauvegardes quotidiennes, les métriques et les logs. ZITADEL fournit l'identité OIDC/OAuth2 et le MFA sans gestion maison des mots de passe. Les deux services peuvent être configurés en région européenne ; le DPA, les sous-traitants et la région exacte restent à valider contractuellement.</p>
-        <p>Le frontend Nuxt peut être compilé puis servi par l'application Java afin de ne pas ajouter un troisième runtime. Le service Python IA reste séparé, avec une instance nano au départ. Les tâches planifiées côté serveur sont possibles via un scheduler applicatif ou un job dédié ; elles ne nécessitent pas forcément une architecture asynchrone avec file de messages.</p>
-        <p class="muted">Cette estimation est un ordre de grandeur hors TVA, domaine et éventuels appels à un fournisseur de modèles IA : 2 runtimes nano à 6 €/mois + PostgreSQL XXS à environ 6,80 €/mois + ZITADEL Free à 0 €. Le nano peut être trop juste pour Java et Python simultanément ; passer à l'option 2 si les tests de charge ou la mémoire le montrent.</p>
+        <p><strong>Choix de départ recommandé.</strong> Clever Cloud fournit le runtime managé, PostgreSQL, les sauvegardes quotidiennes, les métriques et les logs. ZITADEL fournit l'identité OIDC/OAuth2 et le MFA sans gestion maison des mots de passe. Les deux services peuvent être configurés en région européenne ; le DPA, les sous-traitants et la région exacte restent à valider contractuellement.</p>
+        <p>Le frontend Nuxt peut être compilé puis servi par l'application Java afin de ne pas ajouter un troisième runtime. Le service Python IA reste séparé et parle à un provider LLM externe via une interface d'adaptation : changer de provider ne doit pas modifier le domaine métier. Le même contrat doit fonctionner localement et sur le provider d'hébergement.</p>
+        <p class="muted">Ordre de grandeur hors TVA, domaine, trafic et appels aux modèles IA : 2 runtimes nano à 6 €/mois + PostgreSQL XXS à environ 6,80 €/mois + ZITADEL Free à 0 €. Le coût LLM est une ligne budgétaire séparée et n'entre volontairement pas dans ces calculs.</p>
       </article>
 
       <article id="couts" class="protocol-group">
         <p class="eyebrow">COMPARATIF DES COÛTS</p>
         <ul>
-          <li><strong>Option 1 · Lean managée — ~18,80 €/mois :</strong> Clever Cloud, 1 runtime Java/Nuxt nano (6 €), 1 runtime Python nano (6 €), PostgreSQL XXS (≈6,80 €), ZITADEL Free, stockage de fichiers non inclus par défaut. Marge d'environ 1,20 € sur le budget de 20 €.</li>
-          <li><strong>Option 2 · Confort managé — ~38,80 €/mois :</strong> même architecture, mais deux runtimes XS à 16 € chacun et PostgreSQL à ≈6,80 €. Plus réaliste pour Spring Boot + Python disponibles 24/7, sans changer le modèle d'exploitation.</li>
-          <li><strong>Option 3 · Scaleway composable — ~17,94 €/mois avant stockage et trafic :</strong> une instance DEV1-S à 0,00898 €/h (≈6,55 €/mois) pour les services conteneurisés, PostgreSQL DB-DEV-S à 0,0156 €/h (≈11,39 €/mois), Secret Manager et stockage objet facturés à l'usage. Les données restent en régions européennes. Ce choix respecte le budget mais demande davantage de configuration réseau, déploiement, supervision et durcissement de la VM.</li>
+          <li><strong>Option 1 · Lean managée — ~18,80 €/mois :</strong> Clever Cloud, 1 runtime Java/Nuxt nano (6 €), 1 runtime Python nano (6 €), PostgreSQL XXS (≈6,80 €), ZITADEL Free. Le stockage objet n'est pas activé au départ : peu de fichiers sont attendus et leur sensibilité est faible.</li>
+          <li><strong>Option 2 · Confort managé — ~38,80 €/mois :</strong> même architecture, mais deux runtimes XS à 16 € chacun et PostgreSQL à ≈6,80 €. C'est l'option de montée en confort, compatible avec le plafond de 50 €/mois, sans changer les contrats applicatifs ni le provider LLM.</li>
+          <li><strong>Option 3 · Scaleway composable — ~17,94 €/mois avant stockage et trafic :</strong> une instance DEV1-S à 0,00898 €/h (≈6,55 €/mois) pour les services conteneurisés, PostgreSQL DB-DEV-S à 0,0156 €/h (≈11,39 €/mois), Secret Manager et stockage objet facturés à l'usage. Les données restent en régions européennes. Ce choix reste une alternative provider-compatible, mais demande davantage de configuration réseau, déploiement, supervision et durcissement de la VM.</li>
           <li><strong>Option 4 · OVHcloud managé — hors budget :</strong> PostgreSQL Discovery est managé, mais le tarif public affiché commence autour de 0,23 €/h par nœud, soit environ 169 €/mois avant le runtime applicatif. À réserver à un besoin de service managé plus robuste, pas à cette V1.</li>
         </ul>
-        <p class="muted">Calculs mensuels sur 730 heures. Les prix fournisseurs évoluent, sont hors TVA et peuvent dépendre de la région, du stockage, du trafic et du taux de change. Aucun coût de modèle IA n'est inclus : il dépend du modèle, des tokens et du fournisseur choisi.</p>
+        <p class="muted">Calculs mensuels sur 730 heures. Les prix fournisseurs évoluent, sont hors TVA et peuvent dépendre de la région, du stockage, du trafic et du taux de change. Les appels aux API LLM sont exclus de chaque option et suivis séparément selon le modèle, les tokens et le provider choisi.</p>
       </article>
 
       <article id="architecture-cible" class="protocol-group">
@@ -52,12 +52,14 @@
       <article id="securite" class="protocol-group">
         <p class="eyebrow">SÉCURITÉ PRISE EN CHARGE ET RESPONSABILITÉS</p>
         <ul>
-          <li><strong>Provider :</strong> HTTPS, isolation du runtime, patching de la plateforme, PostgreSQL managé, sauvegardes, métriques et logs.</li>
+          <li><strong>Provider :</strong> HTTPS, isolation du runtime, patching de la plateforme, PostgreSQL managé, sauvegardes, métriques et logs. Les composants restent déployables localement et derrière un autre provider via des contrats et variables d'environnement explicites.</li>
           <li><strong>Identité :</strong> ZITADEL en OIDC, MFA activé, rôles applicatifs séparés des administrateurs, aucune base de mots de passe dans l'application.</li>
-          <li><strong>Projet :</strong> PR obligatoires, Dependabot, SAST léger, secret scan, images ou artefacts immuables, environnements staging/production protégés et approbation avant production.</li>
+          <li><strong>Projet public :</strong> le dépôt GitHub est la source de vérité et peut rester public. PR, Dependabot, secret scan et push protection sont obligatoires ; aucune propriété intellectuelle sensible n'est supposée dans le dépôt.</li>
+          <li><strong>Déploiement :</strong> la branche principale vise la production ; une branche de démonstration sert à tester les branches GitHub et le pipeline. Aucun environnement de recette permanent n'est requis.</li>
           <li><strong>Données :</strong> région UE explicitement choisie, chiffrement en transit et au repos, utilisateur PostgreSQL à privilèges minimaux, migrations versionnées et test de restauration.</li>
           <li><strong>Fichiers :</strong> stockage objet européen uniquement si nécessaire, URLs signées, quotas, contrôle du type et de la taille, antivirus si des fichiers non fiables sont acceptés.</li>
-          <li><strong>À notre charge :</strong> vulnérabilités du code, dépendances, autorisations métier, journal d'audit, sauvegarde des secrets, revue du DPA et exercice de restauration.</li>
+          <li><strong>Secrets :</strong> GitHub est suffisant pour les secrets utilisés par Actions via des secrets de dépôt ou d'environnement, mais pas comme coffre runtime. Les secrets de production sont injectés par le provider ou son Secret Manager ; OIDC GitHub est préféré s'il est supporté, sinon un token de déploiement limité est stocké dans un secret d'environnement.</li>
+          <li><strong>À notre charge :</strong> vulnérabilités du code, dépendances, autorisations métier, journal d'audit, sauvegarde des secrets, revue du DPA et exercice de restauration. En local, un `.env.example` documente les variables et `.env` reste ignoré par Git.</li>
         </ul>
       </article>
 
@@ -66,20 +68,23 @@
         <ul>
           <li>Maximum d'environ dix utilisateurs, principalement un seul ; pas d'email transactionnel ni de paiement.</li>
           <li>Disponibilité 24/7, mais pas d'exigence forte de RTO/RPO : sauvegardes quotidiennes et restauration testée suffisent pour la V1.</li>
-          <li>Le besoin de fichiers reste optionnel. Les tâches planifiées sont probables ; les traitements longs pourront évoluer vers une file de messages plus tard.</li>
+          <li>Le besoin de fichiers reste faible et peu sensible : pas de stockage objet dans la V1 tant qu'un besoin concret ne l'impose.</li>
+          <li>Le dépôt GitHub public est la source de vérité. Il doit contenir le contrat local complet : documentation, configuration d'exemple, migrations, tests et lancement reproductible sur la machine Hermes.</li>
+          <li>Une branche de démonstration remplace le staging permanent pour valider le pipeline et les branches GitHub ; aucun coût d'environnement de recette permanent n'est budgété.</li>
+          <li>Le provider LLM est externe et son coût est exclu du budget d'hébergement. Un port/adaptateur unique doit permettre de changer de provider sans modifier le domaine métier.</li>
           <li>Le fournisseur et les données doivent être européens. « Région UE » et « fournisseur sous droit européen » sont deux critères à vérifier séparément.</li>
-          <li>Le budget cible est de 20 €/mois ; il est compatible avec l'option 1 seulement avec des ressources minimales et sans coût de modèle IA.</li>
+          <li>Le budget d'hébergement cible est flexible : environ 20 €/mois en lean, jusqu'à 50 €/mois maximum pour l'option confort. Les appels LLM sont une ligne budgétaire séparée.</li>
         </ul>
       </article>
 
       <article id="questions-suivantes" class="protocol-group">
-        <p class="eyebrow">PROCHAINES QUESTIONS</p>
+        <p class="eyebrow">QUESTIONS RESTANTES POUR CA3</p>
         <ol>
-          <li>Le service IA appelle-t-il une API externe ou doit-il exécuter un modèle local ? Ce choix domine le coût et la mémoire.</li>
-          <li>Le dépôt sera-t-il public ou privé ? GitHub Free inclut les Actions dans les dépôts publics ; les minutes privées ont un quota mensuel.</li>
-          <li>Quelle quantité et quelle sensibilité de fichiers faut-il stocker ?</li>
-          <li>Faut-il une séparation staging/production permanente, ou un environnement de démonstration suffit-il ?</li>
-          <li>Le budget de 20 € est-il strict hors TVA, ou peut-il monter à environ 40 € pour éviter les limites mémoire ?</li>
+          <li>Quel contrat exact exposent les adaptateurs LLM et quels providers doivent être supportés en premier ?</li>
+          <li>Quel framework frontend/backend et quel format de lancement local retiendrons-nous : Docker Compose, scripts natifs ou les deux ?</li>
+          <li>Le provider d'hébergement choisi supporte-t-il OIDC GitHub pour éviter un token de déploiement longue durée ?</li>
+          <li>Quel volume d'utilisateurs et quel profil mémoire justifient le passage des runtimes nano aux XS ?</li>
+          <li>Quelles données doivent réellement rester en UE et quelles clauses DPA/SLA/RTO-RPO faut-il valider avant production ?</li>
         </ol>
       </article>
 
@@ -94,6 +99,10 @@
           <li><a href="https://www.scaleway.com/en/pricing/security-and-account/" target="_blank" rel="noopener">Scaleway · Secret Manager</a> — versions et appels facturés à l'usage.</li>
           <li><a href="https://www.ovhcloud.com/en/public-cloud/prices/" target="_blank" rel="noopener">OVHcloud · tarifs Public Cloud</a> — PostgreSQL Discovery et Production.</li>
           <li><a href="https://github.com/pricing" target="_blank" rel="noopener">GitHub · tarifs</a> — dépôts et minutes GitHub Actions.</li>
+          <li><a href="https://docs.github.com/en/actions/how-tos/write-workflows/choose-what-workflows-do/use-secrets" target="_blank" rel="noopener">GitHub Actions · secrets</a> — secrets de dépôt, d'environnement et d'organisation.</li>
+          <li><a href="https://docs.github.com/en/actions/concepts/security/openid-connect" target="_blank" rel="noopener">GitHub Actions · OpenID Connect</a> — jetons courts sans dupliquer des credentials cloud longue durée.</li>
+          <li><a href="https://docs.github.com/en/code-security/concepts/secret-security/push-protection" target="_blank" rel="noopener">GitHub · push protection</a> — blocage des secrets avant leur arrivée dans un dépôt public.</li>
+          <li><a href="https://developers.clever-cloud.com/doc/administrate/cron" target="_blank" rel="noopener">Clever Cloud · variables d'environnement</a> — accès aux variables injectées dans le runtime.</li>
         </ul>
         <p class="muted">Ce cadrage n'est pas une certification juridique ni un devis. Avant production : confirmer régions, DPA, sous-traitants, rétention des sauvegardes, clauses de transfert, SLA et coût d'appel au modèle IA.</p>
       </article>

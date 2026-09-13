@@ -1,11 +1,11 @@
 flowchart LR
     PR[Pull Request] --> CHECK[Tests · lint · SAST\nDependabot · secret scan]
-    CHECK --> STAGE[Build immutable artifacts\nDéploiement staging UE]
-    STAGE --> SMOKE[Smoke tests\ncontrôle migrations]
-    SMOKE --> GATE{Approbation\nproduction}
-    GATE --> PROD[Production Clever Cloud\nJava + Python]
+    CHECK --> DEMO[Branche demo\ntest du pipeline à la demande]
+    CHECK --> GATE{Approbation\nproduction}
+    GATE --> PROD[Production provider choisi\nJava + Python]
     PROD --> DB[(PostgreSQL\nsauvegardes)]
     PROD --> OBS[Logs · métriques · alertes]
     DB --> RESTORE[Test périodique\nde restauration]
     GATE -. rollback .-> PREV[Version précédente]
-    SEC[Secrets runtime\nSecret Manager / provider] -. accès OIDC .-> PROD
+    SEC[Secrets runtime\nprovider / Secret Manager] -. injection .-> PROD
+    OIDC[GitHub OIDC\nsi supporté] -. jeton court .-> PROD
