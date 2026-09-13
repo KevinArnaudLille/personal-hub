@@ -24,8 +24,23 @@
         <p class="eyebrow">RECOMMANDATION</p>
         <h2>Option 1 · Clever Cloud + ZITADEL · ~18,80 €/mois</h2>
         <p><strong>Choix de départ recommandé.</strong> Clever Cloud fournit le runtime managé, PostgreSQL, les sauvegardes quotidiennes, les métriques et les logs. ZITADEL fournit l'identité OIDC/OAuth2 et le MFA sans gestion maison des mots de passe. Les deux services peuvent être configurés en région européenne ; le DPA, les sous-traitants et la région exacte restent à valider contractuellement.</p>
-        <p>Le frontend Nuxt peut être compilé puis servi par l'application Java afin de ne pas ajouter un troisième runtime. Le service Python IA reste séparé et parle à un provider LLM externe via une interface d'adaptation : changer de provider ne doit pas modifier le domaine métier. Le même contrat doit fonctionner localement et sur le provider d'hébergement.</p>
+        <p>Le frontend Nuxt sera généré statiquement avec <code>nuxi generate</code>, puis servi par l'application Java afin de ne pas ajouter un troisième runtime Node.js en production. Le service Python IA reste séparé et parle à un provider LLM externe via une interface d'adaptation : changer de provider ne doit pas modifier le domaine métier. Le même contrat doit fonctionner localement et sur le provider d'hébergement.</p>
         <p class="muted">Ordre de grandeur hors TVA, domaine, trafic et appels aux modèles IA : 2 runtimes nano à 6 €/mois + PostgreSQL XXS à environ 6,80 €/mois + ZITADEL Free à 0 €. Le coût LLM est une ligne budgétaire séparée et n'entre volontairement pas dans ces calculs.</p>
+      </article>
+
+      <article id="rendu-frontend" class="protocol-group">
+        <p class="eyebrow">MODE DE RENDU FRONTEND</p>
+        <h2>Nuxt statique, Spring Boot dynamique</h2>
+        <p><strong>Principe :</strong> Nuxt pré-rend les routes au build et produit des fichiers dans <code>.output/public/</code>. Ces fichiers HTML, JavaScript et CSS sont ensuite servis comme des ressources statiques par Spring Boot, tandis que l'API Java reste responsable des données, de l'authentification, des secrets et des appels métier.</p>
+        <pre><code>npx nuxi generate
+# .output/public/ → ressources statiques Spring Boot</code></pre>
+        <ul>
+          <li>Les formulaires, dashboards, stores Vue, appels <code>fetch</code>, WebSocket et interactions navigateur restent possibles.</li>
+          <li>Les données personnalisées sont récupérées auprès de l'API Spring Boot après le chargement et l'authentification.</li>
+          <li>Les routes serveur Nuxt/Nitro, le SSR à chaque requête, l'ISR et les secrets côté frontend ne font pas partie de cette option.</li>
+          <li>Si un besoin de SSR, de rendu hybride ou de revalidation serveur apparaît, un runtime Node.js/Nitro devra être ajouté et le budget recalculé.</li>
+        </ul>
+        <p class="muted">Cette décision est volontaire : elle évite un troisième runtime permanent tout en conservant Nuxt comme outil frontend. Elle suppose que les responsabilités serveur restent dans Spring Boot et Python.</p>
       </article>
 
       <article id="couts" class="protocol-group">
@@ -72,6 +87,7 @@
           <li>Le dépôt GitHub public est la source de vérité. Il doit contenir le contrat local complet : documentation, configuration d'exemple, migrations, tests et lancement reproductible sur la machine Hermes.</li>
           <li>Une branche de démonstration remplace le staging permanent pour valider le pipeline et les branches GitHub ; aucun coût d'environnement de recette permanent n'est budgété.</li>
           <li>Le provider LLM est externe et son coût est exclu du budget d'hébergement. Un port/adaptateur unique doit permettre de changer de provider sans modifier le domaine métier.</li>
+          <li>Le frontend Nuxt utilise le mode SSG avec <code>nuxi generate</code>. Spring Boot sert les artefacts statiques et porte les fonctionnalités dynamiques ; Nuxt SSR/Nitro n'est pas activé en production dans la V1.</li>
           <li>Le fournisseur et les données doivent être européens. « Région UE » et « fournisseur sous droit européen » sont deux critères à vérifier séparément.</li>
           <li>Le budget d'hébergement cible est flexible : environ 20 €/mois en lean, jusqu'à 50 €/mois maximum pour l'option confort. Les appels LLM sont une ligne budgétaire séparée.</li>
         </ul>
@@ -82,6 +98,7 @@
         <ol>
           <li>Quel contrat exact exposent les adaptateurs LLM et quels providers doivent être supportés en premier ?</li>
           <li>Quel framework frontend/backend et quel format de lancement local retiendrons-nous : Docker Compose, scripts natifs ou les deux ?</li>
+          <li>Quelles routes frontend doivent être pré-rendues au build et lesquelles doivent charger leurs données côté client via Spring Boot ?</li>
           <li>Le provider d'hébergement choisi supporte-t-il OIDC GitHub pour éviter un token de déploiement longue durée ?</li>
           <li>Quel volume d'utilisateurs et quel profil mémoire justifient le passage des runtimes nano aux XS ?</li>
           <li>Quelles données doivent réellement rester en UE et quelles clauses DPA/SLA/RTO-RPO faut-il valider avant production ?</li>
@@ -103,6 +120,8 @@
           <li><a href="https://docs.github.com/en/actions/concepts/security/openid-connect" target="_blank" rel="noopener">GitHub Actions · OpenID Connect</a> — jetons courts sans dupliquer des credentials cloud longue durée.</li>
           <li><a href="https://docs.github.com/en/code-security/concepts/secret-security/push-protection" target="_blank" rel="noopener">GitHub · push protection</a> — blocage des secrets avant leur arrivée dans un dépôt public.</li>
           <li><a href="https://developers.clever-cloud.com/doc/administrate/cron" target="_blank" rel="noopener">Clever Cloud · variables d'environnement</a> — accès aux variables injectées dans le runtime.</li>
+          <li><a href="https://nuxt.com/docs/4.x/api/commands/generate" target="_blank" rel="noopener">Nuxt · nuxi generate</a> — pré-rendu des routes vers des fichiers statiques.</li>
+          <li><a href="https://nuxt.com/docs/4.x/guide/concepts/rendering" target="_blank" rel="noopener">Nuxt · modes de rendu</a> — limites du statique, du SSR et du rendu hybride.</li>
         </ul>
         <p class="muted">Ce cadrage n'est pas une certification juridique ni un devis. Avant production : confirmer régions, DPA, sous-traitants, rétention des sauvegardes, clauses de transfert, SLA et coût d'appel au modèle IA.</p>
       </article>
