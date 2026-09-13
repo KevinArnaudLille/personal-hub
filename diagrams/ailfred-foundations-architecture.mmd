@@ -6,6 +6,9 @@ flowchart LR
   H[Machine Hermes\nDocker Compose] -. contrat local .-> S
   G[GitHub compte Hermes\nsource + CI] --> C[Clever Cloud\nDockerfile par application]
   C --> S
+  S --> L[Logs JSON stdout\nClever logs · 7 jours]
+  C --> M[Metrics Grafana\nCPU · RAM · alertes]
+  W -. tracker après HTTPS .-> UMI[Umami isolé\nPostgreSQL dédié]
   DC[Domain core\nframework-free] --- P[Ports applicatifs]
   P --- A[Adaptateurs\nHTTP · OIDC · SQL]
   AI[IA Python + provider LLM]:::deferred
