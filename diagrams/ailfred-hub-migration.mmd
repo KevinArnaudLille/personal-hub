@@ -5,13 +5,18 @@ flowchart LR
   A[Utilisateur authentifié] --> UI[Ailfred mobile-first\ninterface simple]
   UI --> API[Ports / cas d'usage Ailfred]
   API --> DB
-  API --> MD[(mermaid_diagrams\nsource · métadonnées · version)]
+  API --> CRUD[Notes · simple CRUD]
+  CRUD --> DB
+  API --> MD[(mermaid_diagrams\nappend-only · source · version)]
   UI --> MR[Service de rendu Mermaid\nSVG sécurisé]
   MD --> MR
+  K[Kevin · administrateur\nvalidation sensible] -. autorise .-> API
+  H[Hermes · opérateur autonome\nports autorisés] --> API
+  U2[Utilisateur Ailfred] --> API
   P[Protocoles Hermes existants] --> API
   P -. remplace .-> Q[Protocoles PH supprimés après bascule]
   S[Sessions] -. archive contrôlée puis suppression .-> DB
   R[Projets] -. archive contrôlée puis suppression .-> DB
-  N[Notes] --> DB
+  N[Notes migrées] --> CRUD
   classDef removed stroke-dasharray: 5 5,fill:#f3f3f3,color:#666
   class Q,S,R removed
