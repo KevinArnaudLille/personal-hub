@@ -21,7 +21,7 @@ Aucune donnée n'est saisie sur la page et aucun formulaire n'est présent. Pour
 
 Les cadrages sont des pages dédiées aux futurs projets. Chaque page conserve le contexte, les décisions, les questions ouvertes et des diagrammes Mermaid explicatifs dans `diagrams/*.mmd`. `protocole CA1` commence un cadrage ; `protocole CA2` poursuit un cadrage existant. Le résumé très court des cadrages actifs est affiché sur l'accueil.
 
-Les cadrages actifs couvrent la **Stack web européenne** (Clever Cloud + ZITADEL pour Nuxt/Vue, Spring Boot, Python IA et PostgreSQL ; scénario minimal autour de 18,80 €/mois hors TVA, modèle IA, domaine et options de stockage) et les **fondations d’Ailfred** : assistant privé, landing OIDC, contrat Docker local, DDD et architecture hexagonale.
+Les cadrages actifs couvrent la **Stack web européenne** (Clever Cloud + ZITADEL pour Nuxt/Vue, Spring Boot, Python IA et PostgreSQL ; scénario minimal autour de 18,80 €/mois hors TVA, modèle IA, domaine et options de stockage), les **fondations d’Ailfred** (assistant privé, landing OIDC, contrat Docker local, DDD et architecture hexagonale) et la **migration du Personal Hub vers Ailfred** (PostgreSQL, retrait de Sessions/Projets, remplacement des protocoles PH et diagrammes Mermaid natifs).
 
 ## Développement local
 

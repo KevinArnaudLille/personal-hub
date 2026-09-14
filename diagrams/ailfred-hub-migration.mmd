@@ -1,0 +1,17 @@
+flowchart LR
+  H[Personal Hub statique\nHTML · JS · données en dur] --> X[Export contrôlé\nnotes retenues + métadonnées]
+  X --> I[Import idempotent\nvalidation · mapping · audit]
+  I --> DB[(PostgreSQL Ailfred)]
+  A[Utilisateur authentifié] --> UI[Ailfred mobile-first\ninterface simple]
+  UI --> API[Ports / cas d'usage Ailfred]
+  API --> DB
+  API --> MD[(mermaid_diagrams\nsource · métadonnées · version)]
+  UI --> MR[Service de rendu Mermaid\nSVG sécurisé]
+  MD --> MR
+  P[Protocoles Hermes existants] --> API
+  P -. remplace .-> Q[Protocoles PH supprimés après bascule]
+  S[Sessions] -. archive contrôlée puis suppression .-> DB
+  R[Projets] -. archive contrôlée puis suppression .-> DB
+  N[Notes] --> DB
+  classDef removed stroke-dasharray: 5 5,fill:#f3f3f3,color:#666
+  class Q,S,R removed

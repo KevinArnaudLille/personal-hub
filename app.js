@@ -24,6 +24,11 @@ const hub = {
     title: 'Ailfred · fondations',
     summary: 'CA1 : assistant personnel privé, landing OIDC, DDD et architecture hexagonale.',
     url: 'cadrages/ailfred-foundations.html'
+  }, {
+    id: 'cadrage-ailfred-hub-migration',
+    title: 'Ailfred · migration du Personal Hub',
+    summary: 'CA2 : bascule vers PostgreSQL, retrait de Sessions/Projets et diagrammes Mermaid natifs.',
+    url: 'cadrages/ailfred-hub-migration.html'
   }]
 };
 
